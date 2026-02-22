@@ -1,4 +1,4 @@
-# 🛠 Troubleshooting Guide – Lab 37: I/O Scheduler
+# 🛠 Troubleshooting Guide – Lab 37: Configuring I/O Scheduler
 
 ---
 
