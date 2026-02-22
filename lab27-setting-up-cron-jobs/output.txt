@@ -1,0 +1,127 @@
+============================================================
+Lab 27 – Setting Up Cron Jobs
+Environment: Ubuntu 24.04.1 LTS
+User: toor
+Shell: Bash 5.2
+============================================================
+
+------------------------------------------------------------
+Task 1: Create Backup Directory
+------------------------------------------------------------
+
+toor@ip-172-31-10-266:~$ mkdir ~/backups
+
+
+Verify:
+
+toor@ip-172-31-10-266:~$ ls
+
+backups  Desktop  Documents
+
+
+------------------------------------------------------------
+Create Backup Script
+------------------------------------------------------------
+
+toor@ip-172-31-10-266:~$ chmod +x ~/backups/backup_home.sh
+
+
+Verify permissions:
+
+toor@ip-172-31-10-266:~$ ls -l ~/backups/
+
+-rwxr-xr-x 1 toor toor 128 Feb 22 12:18 backup_home.sh
+
+
+------------------------------------------------------------
+Schedule Backup with Cron
+------------------------------------------------------------
+
+toor@ip-172-31-10-266:~$ crontab -e
+
+(Added entry:)
+0 2 * * * ~/backups/backup_home.sh
+
+
+Verify:
+
+toor@ip-172-31-10-266:~$ crontab -l
+
+0 2 * * * ~/backups/backup_home.sh
+
+
+------------------------------------------------------------
+Task 2: Add Multiple Cron Jobs
+------------------------------------------------------------
+
+toor@ip-172-31-10-266:~$ crontab -e
+
+(Added entries:)
+
+* * * * * echo "Test cron job" >> ~/cron_test.log
+0 17 * * 1 echo "Weekly reminder" >> ~/weekly_log.txt
+*/10 * * * * date >> ~/time_log.txt
+
+
+Verify all jobs:
+
+toor@ip-172-31-10-266:~$ crontab -l
+
+0 2 * * * ~/backups/backup_home.sh
+* * * * * echo "Test cron job" >> ~/cron_test.log
+0 17 * * 1 echo "Weekly reminder" >> ~/weekly_log.txt
+*/10 * * * * date >> ~/time_log.txt
+
+
+------------------------------------------------------------
+Verify Cron Execution (After 1–2 Minutes)
+------------------------------------------------------------
+
+toor@ip-172-31-10-266:~$ cat ~/cron_test.log
+
+Test cron job
+Test cron job
+
+
+toor@ip-172-31-10-266:~$ cat ~/time_log.txt
+
+Sat Feb 22 12:20:01 UTC 2026
+
+
+------------------------------------------------------------
+Task 3: Manage Cron Jobs
+------------------------------------------------------------
+
+List current jobs:
+
+toor@ip-172-31-10-266:~$ crontab -l
+
+0 2 * * * ~/backups/backup_home.sh
+* * * * * echo "Test cron job" >> ~/cron_test.log
+0 17 * * 1 echo "Weekly reminder" >> ~/weekly_log.txt
+*/10 * * * * date >> ~/time_log.txt
+
+
+Remove all jobs:
+
+toor@ip-172-31-10-266:~$ crontab -r
+
+
+Verify removal:
+
+toor@ip-172-31-10-266:~$ crontab -l
+
+no crontab for toor
+
+
+------------------------------------------------------------
+Cleanup
+------------------------------------------------------------
+
+toor@ip-172-31-10-266:~$ rm -rf ~/backups
+toor@ip-172-31-10-266:~$ rm -f ~/cron_test.log ~/weekly_log.txt ~/time_log.txt
+
+
+============================================================
+End of Lab 27 Output
+============================================================
