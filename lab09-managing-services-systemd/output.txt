@@ -1,0 +1,179 @@
+========================================
+Lab 09 - Managing Services with systemd
+Execution Output Log
+========================================
+
+
+--------------------------------------------------
+Task 1: Check Service Status
+--------------------------------------------------
+
+-bash-4.2$ systemctl list-units --type=service --state=running
+
+  UNIT                         LOAD   ACTIVE SUB     DESCRIPTION
+  chronyd.service              loaded active running NTP client/server
+  crond.service                loaded active running Command Scheduler
+  dbus-broker.service          loaded active running D-Bus System Message Bus
+  firewalld.service            loaded active running firewalld - dynamic firewall daemon
+  NetworkManager.service       loaded active running Network Manager
+  sshd.service                 loaded active running OpenSSH server daemon
+  systemd-journald.service     loaded active running Journal Service
+  systemd-logind.service       loaded active running User Login Management
+
+LOAD   = Reflects whether the unit definition was properly loaded.
+ACTIVE = High-level activation state.
+SUB    = Low-level activation state.
+
+
+-bash-4.2$ systemctl status sshd
+
+● sshd.service - OpenSSH server daemon
+     Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled; preset: enabled)
+     Active: active (running) since Thu 2026-02-22 12:40:15 UTC; 1h 12min ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+   Main PID: 712 (sshd)
+      Tasks: 1 (limit: 23000)
+     Memory: 4.2M
+        CPU: 89ms
+     CGroup: /system.slice/sshd.service
+             └─712 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
+
+
+--------------------------------------------------
+Troubleshooting (Install OpenSSH if Needed)
+--------------------------------------------------
+
+-bash-4.2$ sudo dnf install openssh-server
+Package openssh-server-8.7p1-34.el9.x86_64 is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+
+
+--------------------------------------------------
+Task 2: Start, Stop, and Restart Services
+--------------------------------------------------
+
+-bash-4.2$ sudo systemctl stop sshd
+
+-bash-4.2$ systemctl status sshd
+
+● sshd.service - OpenSSH server daemon
+     Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled)
+     Active: inactive (dead) since Thu 2026-02-22 13:55:02 UTC; 5s ago
+
+
+-bash-4.2$ sudo systemctl start sshd
+
+-bash-4.2$ systemctl status sshd
+
+● sshd.service - OpenSSH server daemon
+     Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled)
+     Active: active (running) since Thu 2026-02-22 13:55:22 UTC; 2s ago
+   Main PID: 1402 (sshd)
+
+
+-bash-4.2$ sudo systemctl restart sshd
+(no output indicates successful restart)
+
+
+--------------------------------------------------
+Task 3: Enable and Disable Services at Boot
+--------------------------------------------------
+
+-bash-4.2$ sudo systemctl enable sshd
+
+Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service →
+/usr/lib/systemd/system/sshd.service.
+
+
+-bash-4.2$ sudo systemctl disable sshd
+
+Removed "/etc/systemd/system/multi-user.target.wants/sshd.service".
+
+
+--------------------------------------------------
+Task 4: Inspect Unit Files
+--------------------------------------------------
+
+-bash-4.2$ systemctl cat sshd
+
+# /usr/lib/systemd/system/sshd.service
+[Unit]
+Description=OpenSSH server daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/sshd -D
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+
+-bash-4.2$ systemctl list-dependencies sshd
+
+sshd.service
+● ├─system.slice
+● ├─network.target
+● └─sshd-keygen.target
+
+
+--------------------------------------------------
+Task 5: View Logs with journalctl
+--------------------------------------------------
+
+-bash-4.2$ sudo journalctl -u sshd | tail
+
+Feb 22 13:55:22 localhost systemd[1]: Started OpenSSH server daemon.
+Feb 22 13:55:24 localhost sshd[1402]: Server listening on 0.0.0.0 port 22.
+Feb 22 13:55:24 localhost sshd[1402]: Server listening on :: port 22.
+
+
+-bash-4.2$ sudo journalctl -u sshd --since "1 hour ago"
+
+Feb 22 13:55:02 localhost systemd[1]: Stopping OpenSSH server daemon...
+Feb 22 13:55:22 localhost systemd[1]: Started OpenSSH server daemon.
+
+
+-bash-4.2$ sudo journalctl -u sshd -f
+
+Feb 22 14:02:11 localhost sshd[1450]:
+Accepted password for student from 10.0.2.15 port 53210 ssh2
+
+(Pressed Ctrl + C to exit live view)
+
+
+--------------------------------------------------
+Additional Practice
+--------------------------------------------------
+
+-bash-4.2$ systemd-analyze blame
+2.134s NetworkManager.service
+1.981s firewalld.service
+1.502s chronyd.service
+1.021s sshd.service
+...
+
+
+-bash-4.2$ sudo systemctl mask sshd
+
+Created symlink /etc/systemd/system/sshd.service → /dev/null
+
+
+--------------------------------------------------
+Verification Summary
+--------------------------------------------------
+
+✔ Listed running services
+✔ Checked service status
+✔ Stopped and started service
+✔ Restarted service successfully
+✔ Enabled and disabled service at boot
+✔ Inspected unit configuration
+✔ Viewed logs and filtered by time
+✔ Followed logs in real-time
+✔ Masked service successfully
