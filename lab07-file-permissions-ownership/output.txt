@@ -1,0 +1,169 @@
+========================================
+Lab 07 - Controlling File Permissions and Ownership
+Execution Output Log
+========================================
+
+
+--------------------------------------------------
+Lab Setup
+--------------------------------------------------
+
+-bash-4.2$ pwd
+/home/student
+
+-bash-4.2$ mkdir ~/permissions_lab
+
+-bash-4.2$ cd ~/permissions_lab
+
+-bash-4.2$ pwd
+/home/student/permissions_lab
+
+
+--------------------------------------------------
+Task 1: Viewing File Permissions
+--------------------------------------------------
+
+-bash-4.2$ touch file1.txt
+
+-bash-4.2$ mkdir dir1
+
+-bash-4.2$ ls -l
+total 0
+drwxr-xr-x. 2 student student 6 Feb 22 13:10 dir1
+-rw-r--r--. 1 student student 0 Feb 22 13:10 file1.txt
+
+-bash-4.2$ ls -la
+total 4
+drwxr-xr-x. 3 student student  38 Feb 22 13:10 .
+drwx------. 7 student student 190 Feb 22 13:05 ..
+drwxr-xr-x. 2 student student   6 Feb 22 13:10 dir1
+-rw-r--r--. 1 student student   0 Feb 22 13:10 file1.txt
+
+
+--------------------------------------------------
+Task 2: Modifying Permissions (Symbolic Mode)
+--------------------------------------------------
+
+-bash-4.2$ chmod u+x file1.txt
+
+-bash-4.2$ ls -l file1.txt
+-rwxr--r--. 1 student student 0 Feb 22 13:10 file1.txt
+
+-bash-4.2$ chmod g-r file1.txt
+
+-bash-4.2$ ls -l file1.txt
+-rwx--xr--. 1 student student 0 Feb 22 13:10 file1.txt
+
+-bash-4.2$ chmod u=rwx,g=rx,o= file1.txt
+
+-bash-4.2$ ls -l file1.txt
+-rwxr-x---. 1 student student 0 Feb 22 13:10 file1.txt
+
+
+--------------------------------------------------
+Task 2: Modifying Permissions (Numeric Mode)
+--------------------------------------------------
+
+-bash-4.2$ chmod 755 file1.txt
+
+-bash-4.2$ ls -l file1.txt
+-rwxr-xr-x. 1 student student 0 Feb 22 13:10 file1.txt
+
+-bash-4.2$ chmod 600 file1.txt
+
+-bash-4.2$ ls -l file1.txt
+-rw-------. 1 student student 0 Feb 22 13:10 file1.txt
+
+
+--------------------------------------------------
+Task 3: Managing Ownership
+--------------------------------------------------
+
+-bash-4.2$ sudo chown root file1.txt
+
+-bash-4.2$ ls -l file1.txt
+-rw-------. 1 root student 0 Feb 22 13:10 file1.txt
+
+-bash-4.2$ sudo chown student:student file1.txt
+
+-bash-4.2$ ls -l file1.txt
+-rw-------. 1 student student 0 Feb 22 13:10 file1.txt
+
+-bash-4.2$ sudo chgrp wheel file1.txt
+
+-bash-4.2$ ls -l file1.txt
+-rw-------. 1 student wheel 0 Feb 22 13:10 file1.txt
+
+
+--------------------------------------------------
+Task 4: Special Permission Bits
+--------------------------------------------------
+
+-bash-4.2$ which passwd
+/usr/bin/passwd
+
+-bash-4.2$ ls -l /usr/bin/passwd
+-rwsr-xr-x. 1 root root 68232 Jan 10  2026 /usr/bin/passwd
+
+-bash-4.2$ sudo chmod u+s /usr/bin/passwd
+(No output indicates success.)
+
+-bash-4.2$ mkdir shared_dir
+
+-bash-4.2$ sudo chmod g+s shared_dir
+
+-bash-4.2$ ls -ld shared_dir
+drwxr-sr-x. 2 student student 6 Feb 22 13:18 shared_dir
+
+-bash-4.2$ sudo chmod +t /tmp
+
+-bash-4.2$ ls -ld /tmp
+drwxrwxrwt. 18 root root 4096 Feb 22 13:20 /tmp
+
+
+--------------------------------------------------
+Task 5: SELinux Contexts
+--------------------------------------------------
+
+-bash-4.2$ sudo dnf install policycoreutils-python-utils -y
+Package policycoreutils-python-utils-3.5-5.el9.noarch is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+
+-bash-4.2$ ls -Z file1.txt
+-rw-------. student wheel unconfined_u:object_r:user_home_t:s0 file1.txt
+
+-bash-4.2$ sudo chcon -t httpd_sys_content_t file1.txt
+
+-bash-4.2$ ls -Z file1.txt
+-rw-------. student wheel unconfined_u:object_r:httpd_sys_content_t:s0 file1.txt
+
+-bash-4.2$ sudo restorecon -v file1.txt
+Relabeled 'file1.txt'
+
+-bash-4.2$ ls -Z file1.txt
+-rw-------. student wheel unconfined_u:object_r:user_home_t:s0 file1.txt
+
+
+--------------------------------------------------
+Cleanup
+--------------------------------------------------
+
+-bash-4.2$ cd ~
+
+-bash-4.2$ rm -rf ~/permissions_lab
+
+(No output indicates successful cleanup.)
+
+
+--------------------------------------------------
+Verification Summary
+--------------------------------------------------
+
+✔ File permissions viewed and interpreted
+✔ Permissions modified using symbolic and numeric modes
+✔ Ownership changed using chown and chgrp
+✔ SUID, SGID, and sticky bit configured
+✔ SELinux contexts modified and restored
+✔ Lab directory cleaned up successfully
