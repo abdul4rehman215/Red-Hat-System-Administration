@@ -1,0 +1,163 @@
+============================================================
+Lab 01 – Advanced Bash History and Search
+Execution Output Log
+Environment: Ubuntu 24.04.1 LTS
+User: toor
+============================================================
+
+
+------------------------------------------------------------
+Step 1 – Verify Bash Version
+------------------------------------------------------------
+
+toor@ip-172-31-10-184:~$ bash --version
+
+GNU bash, version 5.2.21(1)-release (x86_64-pc-linux-gnu)
+Copyright (C) 2022 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+
+
+------------------------------------------------------------
+Step 2 – Clear Current History
+------------------------------------------------------------
+
+toor@ip-172-31-10-184:~$ history -c
+
+(No output — history cleared successfully.)
+
+
+------------------------------------------------------------
+Task 1 – Populate History
+------------------------------------------------------------
+
+toor@ip-172-31-10-184:~$ echo "Hello World"
+
+Hello World
+
+
+toor@ip-172-31-10-184:~$ ls -l
+
+total 8
+drwxr-xr-x 2 toor toor 4096 Feb 22 09:10 Desktop
+drwxr-xr-x 2 toor toor 4096 Feb 22 09:10 Documents
+
+
+toor@ip-172-31-10-184:~$ date
+
+Sat Feb 22 09:12:44 UTC 2026
+
+
+toor@ip-172-31-10-184:~$ whoami
+
+toor
+
+
+------------------------------------------------------------
+Task 1 – Reverse Search (Ctrl+R)
+------------------------------------------------------------
+
+(reverse-i-search)`echo': echo "Hello World"
+
+Press Enter
+
+toor@ip-172-31-10-184:~$ echo "Hello World"
+
+Hello World
+
+
+------------------------------------------------------------
+Task 2 – Create More History Entries
+------------------------------------------------------------
+
+toor@ip-172-31-10-184:~$ grep "error" /var/log/syslog
+
+grep: /var/log/syslog: No such file or directory
+
+
+toor@ip-172-31-10-184:~$ find ~ -name "*.txt"
+
+/home/toor/Documents/notes.txt
+
+
+toor@ip-172-31-10-184:~$ docker ps -a
+
+Command 'docker' not found, but can be installed with:
+sudo apt install docker.io
+
+
+------------------------------------------------------------
+Task 2 – Reverse Search for "docker"
+------------------------------------------------------------
+
+(reverse-i-search)`docker': docker ps -a
+
+Press Enter
+
+toor@ip-172-31-10-184:~$ docker ps -a
+
+Command 'docker' not found, but can be installed with:
+sudo apt install docker.io
+
+
+------------------------------------------------------------
+Task 2 – Modify Found Command
+------------------------------------------------------------
+
+(reverse-i-search)`ls -l': ls -l
+
+User edits to:
+ls -la
+
+toor@ip-172-31-10-184:~$ ls -la
+
+total 28
+drwxr-xr-x 5 toor toor 4096 Feb 22 09:10 .
+drwxr-xr-x 3 root root 4096 Feb 22 09:00 ..
+-rw------- 1 toor toor  220 Feb 22 09:00 .bash_logout
+-rw-r--r-- 1 toor toor 3771 Feb 22 09:00 .bashrc
+-rw-r--r-- 1 toor toor  807 Feb 22 09:00 .profile
+drwxr-xr-x 2 toor toor 4096 Feb 22 09:10 Desktop
+drwxr-xr-x 2 toor toor 4096 Feb 22 09:10 Documents
+
+
+------------------------------------------------------------
+Task 3 – Apply Persistent History Config
+------------------------------------------------------------
+
+toor@ip-172-31-10-184:~$ source ~/.bashrc
+
+(No output)
+
+
+------------------------------------------------------------
+Task 3 – Test History Aliases
+------------------------------------------------------------
+
+toor@ip-172-31-10-184:~$ hs docker
+
+  10  docker ps -a
+
+
+toor@ip-172-31-10-184:~$ hsi ERROR
+
+   6  grep "error" /var/log/syslog
+
+
+------------------------------------------------------------
+Task 3 – Run Advanced History Frequency Function
+------------------------------------------------------------
+
+toor@ip-172-31-10-184:~$ hst
+
+      2  ps -a
+      2  ls -l
+      1  whoami
+      1  date
+      1  echo "Hello World"
+      1  find ~ -name "*.txt"
+      1  grep "error" /var/log/syslog"
+
+
+============================================================
+End of Lab 01 Execution Log
+============================================================
