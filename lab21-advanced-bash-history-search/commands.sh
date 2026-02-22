@@ -1,5 +1,5 @@
 #!/bin/bash
-# Lab 01 – Advanced Bash History and Search
+# Lab 21 – Advanced Bash History and Search
 # Commands Executed During Lab (Sequential)
 
 # Step 1: Verify Bash version
