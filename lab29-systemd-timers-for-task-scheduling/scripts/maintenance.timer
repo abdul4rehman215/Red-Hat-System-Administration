@@ -1,0 +1,11 @@
+[Unit]
+Description=Run maintenance hourly
+
+[Timer]
+OnCalendar=hourly
+RandomizedDelaySec=5m
+Persistent=true
+Unit=maintenance.service
+
+[Install]
+WantedBy=timers.target
