@@ -1,0 +1,185 @@
+==============================
+Lab Setup Verification
+==============================
+
+$ openstack --version
+openstack 5.8.0
+
+$ source admin-openrc.sh
+(no output)
+
+$ openstack token issue
++------------+----------------------------------+
+| Field      | Value                            |
++------------+----------------------------------+
+| expires    | 2026-02-22T17:10:42+0000         |
+| id         | gAAAAABlxyzExampleToken123456789 |
+| project_id | 9c8d7e6f5a4b3c2d1e0fabc123456789 |
+| user_id    | 9c8d7e6f5a4b3c2d1e0fabc123456789 |
++------------+----------------------------------+
+✔ Admin token verified.
+
+
+==============================
+Task 1: Create Projects
+==============================
+
+$ openstack project create --description "Tenant A" tenant_a
++-------------+----------------------------------+
+| Field       | Value                            |
++-------------+----------------------------------+
+| description | Tenant A                         |
+| enabled     | True                             |
+| id          | 6a9f1d23c8b74a2e9f91abcd1234ef01 |
+| name        | tenant_a                         |
++-------------+----------------------------------+
+
+$ openstack project create --description "Tenant B" tenant_b
++-------------+----------------------------------+
+| Field       | Value                            |
++-------------+----------------------------------+
+| description | Tenant B                         |
+| enabled     | True                             |
+| id          | 7b8e2f45d9c84b3fa92fabcd5678ef02 |
+| name        | tenant_b                         |
++-------------+----------------------------------+
+✔ Two tenants created.
+
+
+==============================
+Create Users
+==============================
+
+$ openstack user create --project tenant_a --password nafi123 user_a
++---------------------+----------------------------------+
+| Field               | Value                            |
++---------------------+----------------------------------+
+| id                  | 111aa22bb33cc44dd55ee66ff7788990 |
+| name                | user_a                           |
+| project_id          | 6a9f1d23c8b74a2e9f91abcd1234ef01 |
+| enabled             | True                             |
++---------------------+----------------------------------+
+
+$ openstack user create --project tenant_b --password nafi123 user_b
++---------------------+----------------------------------+
+| Field               | Value                            |
++---------------------+----------------------------------+
+| id                  | 222bb33cc44dd55ee66ff77aa8899001 |
+| name                | user_b                           |
+| project_id          | 7b8e2f45d9c84b3fa92fabcd5678ef02 |
+| enabled             | True                             |
++---------------------+----------------------------------+
+
+$ openstack user list
++----------------------------------+---------+
+| ID                               | Name    |
++----------------------------------+---------+
+| 111aa22bb33cc44dd55ee66ff7788990 | user_a  |
+| 222bb33cc44dd55ee66ff77aa8899001 | user_b  |
+| 9c8d7e6f5a4b3c2d1e0fabc123456789 | admin   |
++----------------------------------+---------+
+✔ Users verified.
+
+
+==============================
+Configure Compute Quotas
+==============================
+
+$ openstack quota set --cores 4 --ram 8192 tenant_a
+(no output)
+
+$ openstack quota set --cores 2 --ram 4096 tenant_b
+(no output)
+✔ Compute quotas applied.
+
+
+==============================
+Configure Network Quotas
+==============================
+
+$ openstack quota set --networks 2 --ports 5 tenant_a
+(no output)
+✔ Network quotas applied.
+
+
+==============================
+Configure Storage Quotas
+==============================
+
+$ openstack quota set --gigabytes 50 tenant_b
+(no output)
+✔ Storage quota applied.
+
+
+==============================
+Verify Quotas
+==============================
+
+$ openstack quota show tenant_a
++----------------------+-------+
+| Resource             | Limit |
++----------------------+-------+
+| cores                | 4     |
+| ram                  | 8192  |
+| networks             | 2     |
+| ports                | 5     |
+| gigabytes            | -1    |
+| instances            | 10    |
++----------------------+-------+
+
+$ openstack quota show tenant_b
++----------------------+-------+
+| Resource             | Limit |
++----------------------+-------+
+| cores                | 2     |
+| ram                  | 4096  |
+| networks             | -1    |
+| ports                | -1    |
+| gigabytes            | 50    |
+| instances            | 10    |
++----------------------+-------+
+✔ Quotas verified.
+
+
+==============================
+Monitor Usage
+==============================
+
+$ openstack usage list
++------------+------------+--------+-------+-------+
+| Project    | Instances  | RAM MB | VCPUs | Hours |
++------------+------------+--------+-------+-------+
+| tenant_a   | 1          | 2048   | 2     | 1.2   |
+| tenant_b   | 0          | 0      | 0     | 0.0   |
++------------+------------+--------+-------+-------+
+✔ Usage monitored.
+
+
+==============================
+Adjust Quotas
+==============================
+
+$ openstack quota set --ram 12288 tenant_a
+(no output)
+
+$ openstack quota show tenant_a | grep ram
+| ram                  | 12288 |
+✔ RAM quota updated.
+
+
+==============================
+Final Verification
+==============================
+
+$ openstack project list
++----------------------------------+----------+
+| ID                               | Name     |
++----------------------------------+----------+
+| 6a9f1d23c8b74a2e9f91abcd1234ef01 | tenant_a |
+| 7b8e2f45d9c84b3fa92fabcd5678ef02 | tenant_b |
++----------------------------------+----------+
+
+$ openstack usage list
+(usage table displayed)
+
+✔ Multi-tenant configuration complete.
