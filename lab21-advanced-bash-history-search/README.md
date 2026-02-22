@@ -1,4 +1,4 @@
-# 🧪 Lab 01 – Advanced Bash History and Search
+# 🧪 Lab 21 – Advanced Bash History and Search
 
 
 # 🎯 Objectives
@@ -28,7 +28,7 @@ Before performing this lab, the following were required:
 ## 📁 Repository Structure
 
 ```
-lab01-advanced-bash-history-search/
+lab21-advanced-bash-history-search/
 │
 ├── README.md
 ├── commands.sh
