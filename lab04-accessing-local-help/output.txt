@@ -1,0 +1,240 @@
+========================================
+Lab 04 - Accessing Local Help and Documentation
+Execution Output Log
+========================================
+
+
+--------------------------------------------------
+Task 1: Using Manual Pages
+--------------------------------------------------
+
+-bash-4.2$ man ls
+
+LS(1)                            User Commands                           LS(1)
+
+NAME
+       ls - list directory contents
+
+SYNOPSIS
+       ls [OPTION]... [FILE]...
+
+DESCRIPTION
+       List information about the FILEs (the current directory by default).
+
+       -a, --all
+              do not ignore entries starting with .
+
+       -l     use a long listing format
+
+       --color[=WHEN]
+              colorize the output; WHEN can be 'always', 'auto', or 'never'
+
+(END)
+
+(Pressed q to quit)
+
+
+-bash-4.2$ man 5 passwd
+
+PASSWD(5)                      File Formats                      PASSWD(5)
+
+NAME
+       passwd - password file
+
+DESCRIPTION
+       /etc/passwd contains one line per user account.
+
+       Each line contains seven fields separated by colons (:)
+
+       login name
+       encrypted password
+       user ID
+       group ID
+       user information
+       home directory
+       login shell
+
+(END)
+
+(Pressed q to quit)
+
+
+-bash-4.2$ sudo dnf install man-db -y
+Package man-db-2.9.3-7.el9.x86_64 is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+
+
+--------------------------------------------------
+Task 2: Using Info Pages
+--------------------------------------------------
+
+-bash-4.2$ info coreutils
+
+File: coreutils.info,  Node: Top
+
+GNU Core Utilities
+******************
+
+This manual documents the GNU core utilities, including:
+ls, cp, mv, rm, mkdir, rmdir, cat, sort, and others.
+
+* ls invocation::           List directory contents.
+* cp invocation::           Copy files and directories.
+* mv invocation::           Move (rename) files.
+
+(Pressed Enter to follow links)
+(Pressed n for next)
+(Pressed p for previous)
+(Pressed u for up)
+(Pressed q to quit)
+
+
+--------------------------------------------------
+Task 3: Using --help Flag
+--------------------------------------------------
+
+-bash-4.2$ ls --help
+Usage: ls [OPTION]... [FILE]...
+List information about the FILEs (the current directory by default).
+
+  -a, --all                  do not ignore entries starting with .
+  -l                         use a long listing format
+  -h, --human-readable       with -l, print sizes in human readable format
+  -R, --recursive            list subdirectories recursively
+
+
+-bash-4.2$ podman --help
+Manage pods, containers and container images.
+
+Usage:
+  podman [options] [command]
+
+Available Commands:
+  run         Run a command in a new container
+  build       Build an image using instructions from Containerfiles
+  images      List images in local storage
+  ps          List containers
+  pull        Pull an image from a registry
+
+
+-bash-4.2$ podman run --help
+Run a command in a new container
+
+Usage:
+  podman run [options] IMAGE [COMMAND] [ARG...]
+
+Options:
+  -d, --detach               Run container in background
+  -p, --publish list         Publish a container's port
+  --name string              Assign a name to the container
+  --rm                       Automatically remove container when it exits
+
+
+--------------------------------------------------
+Task 4: Exploring /usr/share/doc
+--------------------------------------------------
+
+-bash-4.2$ ls /usr/share/doc | head
+bash
+coreutils
+dnf
+glibc
+grep
+info
+iproute
+less
+podman
+shadow-utils
+
+
+-bash-4.2$ less /usr/share/doc/bash/README
+
+This is the README file for the GNU Bash shell.
+
+Bash is the GNU Project's Bourne Again SHell.
+It is compatible with the Bourne shell (sh).
+It incorporates useful features from the Korn shell (ksh) and C shell (csh).
+
+(Pressed q to quit)
+
+
+--------------------------------------------------
+Task 5: Using whatis and apropos
+--------------------------------------------------
+
+-bash-4.2$ whatis ls
+ls (1)               - list directory contents
+
+-bash-4.2$ whatis podman
+podman (1)           - Manage pods, containers and images
+
+
+-bash-4.2$ apropos "list directory"
+ls (1)               - list directory contents
+dir (1)              - list directory contents
+vdir (1)             - list directory contents
+
+
+-bash-4.2$ apropos container
+podman (1)           - Manage pods, containers and images
+buildah (1)          - Build OCI container images
+skopeo (1)           - Work with container images
+
+
+--------------------------------------------------
+Task 6: Examining Package Information
+--------------------------------------------------
+
+-bash-4.2$ sudo dnf list installed podman
+Installed Packages
+podman.x86_64     4.6.1-3.el9     @rhel-9-baseos
+
+
+-bash-4.2$ sudo dnf info podman
+Name         : podman
+Version      : 4.6.1
+Release      : 3.el9
+Architecture : x86_64
+Size         : 37 M
+Source       : podman-4.6.1-3.el9.src.rpm
+Repository   : rhel-9-baseos
+Summary      : Manage pods, containers and container images
+URL          : https://podman.io/
+License      : ASL 2.0
+Description  :
+ Podman is a daemonless container engine for developing,
+ managing, and running OCI Containers.
+
+
+-bash-4.2$ sudo dnf changelog podman | head
+* Wed Jan 10 2026 Red Hat, Inc.
+- Update to Podman 4.6.1
+- Security fixes and performance improvements
+
+* Mon Nov 15 2025 Red Hat, Inc.
+- Bug fixes for container networking
+
+
+--------------------------------------------------
+Final Skill Verification
+--------------------------------------------------
+
+-bash-4.2$ apropos network
+nmcli (1)        - command-line tool for controlling NetworkManager
+ip (8)           - show / manipulate routing, devices, policy routing
+ss (8)           - another utility to investigate sockets
+
+
+-bash-4.2$ man ls
+(Search / -a)
+
+-a, --all
+       do not ignore entries starting with .
+
+(Pressed q to quit)
+
+
+-bash-4.2$ sudo rpm -qi podman | grep Install
+Install Date: Thu 22 Feb 2026 09:58:41 AM UTC
