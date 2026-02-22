@@ -1,0 +1,130 @@
+========================================
+Lab 05 - Editing Text Files in RHEL
+Execution Output Log
+========================================
+
+
+--------------------------------------------------
+Task 1: Editing Files with vim
+--------------------------------------------------
+
+-bash-4.2$ pwd
+/home/student
+
+-bash-4.2$ vim lab5_vim.txt
+(Vim opened in normal mode)
+-- INSERT --
+Red Hat Enterprise Linux
+Text Editing Lab
+Version 9.0
+(Pressed ESC)
+:wq
+(Exited vim)
+
+-bash-4.2$ cat lab5_vim.txt
+Red Hat Enterprise Linux
+Text Editing Lab
+Version 9.0
+
+File successfully created and saved.
+
+
+--------------------------------------------------
+Task 1: Editing Files with nano
+--------------------------------------------------
+
+-bash-4.2$ nano lab5_nano.txt
+(Nano editor opened)
+
+Nano is a user-friendly editor.
+Used for quick edits.
+
+^G Help  ^O Write Out  ^X Exit
+(Pressed Ctrl+O → Enter)
+(Pressed Ctrl+X to exit)
+
+-bash-4.2$ cat lab5_nano.txt
+Nano is a user-friendly editor.
+Used for quick edits.
+
+Nano file successfully created.
+
+
+--------------------------------------------------
+Task 2: Inline Text Replacement with sed
+--------------------------------------------------
+
+-bash-4.2$ echo -e "RHEL 8\nRHEL 9\nFedora 38" > versions.txt
+
+-bash-4.2$ cat versions.txt
+RHEL 8
+RHEL 9
+Fedora 38
+
+
+-bash-4.2$ sed -i 's/RHEL/Red Hat/g' versions.txt
+
+-bash-4.2$ cat versions.txt
+Red Hat 8
+Red Hat 9
+Fedora 38
+
+Replacement successful.
+
+
+-bash-4.2$ sed -i.bak 's/Red Hat/RHEL/g' versions.txt
+
+-bash-4.2$ ls
+lab5_nano.txt
+lab5_vim.txt
+users.csv
+versions.txt
+versions.txt.bak
+
+
+-bash-4.2$ sed -i '/Fedora/d' versions.txt
+
+-bash-4.2$ cat versions.txt
+RHEL 8
+RHEL 9
+
+Line deletion successful.
+
+
+--------------------------------------------------
+Task 3: Text Processing with awk
+--------------------------------------------------
+
+-bash-4.2$ echo -e "ID,Name,OS\n1,Alice,RHEL\n2,Bob,Fedora" > users.csv
+
+-bash-4.2$ cat users.csv
+ID,Name,OS
+1,Alice,RHEL
+2,Bob,Fedora
+
+
+-bash-4.2$ awk -F ',' '{print $2}' users.csv
+Name
+Alice
+Bob
+
+Column extraction successful.
+
+
+-bash-4.2$ awk -F ',' '$3 == "RHEL" {print $0}' users.csv
+1,Alice,RHEL
+
+Filtering successful.
+
+
+--------------------------------------------------
+Final Verification
+--------------------------------------------------
+
+-bash-4.2$ ls -l lab5_*.txt versions.txt users.csv
+-rw-r--r--. 1 student student 59 Feb 22 12:11 lab5_nano.txt
+-rw-r--r--. 1 student student 59 Feb 22 12:09 lab5_vim.txt
+-rw-r--r--. 1 student student 22 Feb 22 12:14 versions.txt
+-rw-r--r--. 1 student student 46 Feb 22 12:16 users.csv
+
+All files created and modified successfully.
