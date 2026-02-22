@@ -1,4 +1,4 @@
-# 🎤 Interview Questions – Lab 40: Configuring NFS for File Sharing
+# 🎤 Interview Q&A – Lab 40: Configuring NFS for File Sharing
 
 ---
 
