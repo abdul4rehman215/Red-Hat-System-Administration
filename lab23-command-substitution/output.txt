@@ -1,0 +1,153 @@
+============================================================
+Lab 23 – Command Substitution
+Environment: Ubuntu 24.04.1 LTS
+User: toor
+============================================================
+
+Step 1: Verify directory creation
+----------------------------------
+backup.tar.gz  config.ini  data.csv  file1.txt  file2.log
+
+
+Task 1: Basic Command Substitution
+-----------------------------------
+
+Command:
+echo "Today is $(date)"
+
+Output:
+Today is Sat Feb 22 10:48:17 UTC 2026
+
+
+Command:
+echo "There are $(ls | wc -l) files in this directory"
+
+Output:
+There are 5 files in this directory
+
+
+Backtick Syntax Example
+-----------------------
+
+Command:
+echo "Today is `date`"
+
+Output:
+Today is Sat Feb 22 10:48:32 UTC 2026
+
+
+Nested Substitution Comparison
+------------------------------
+
+Command:
+echo "Test 1: $(echo $(date))"
+
+Output:
+Test 1: Sat Feb 22 10:48:45 UTC 2026
+
+
+Command:
+echo "Test 2: `echo \`date\``"
+
+Output:
+Test 2: Sat Feb 22 10:48:51 UTC 2026
+
+
+Task 2: Dynamic File Operations
+--------------------------------
+
+Command:
+cat $(find . -name "*.txt")
+
+Output:
+Sample text content
+
+
+Command:
+wc -l $(find . -name "*.log")
+
+Output:
+2 ./file2.log
+
+
+Advanced File Operations
+------------------------
+
+Command:
+tar czf config_backup_$(date +%Y%m%d).tar.gz $(find . -name "*.ini")
+
+Command:
+ls
+
+Output:
+backup.tar.gz
+config.ini
+config_backup_20260222.tar.gz
+data.csv
+file1.txt
+file2.log
+
+
+Disk Usage Check
+----------------
+
+Command:
+du -h $(find . -size +1M)
+
+Output:
+(No output — no files larger than 1MB exist.)
+
+
+Task 3: Building Command Pipelines
+-----------------------------------
+
+Command:
+echo "There are $(ps aux | wc -l) processes running"
+
+Output:
+There are 118 processes running
+
+
+Find Largest File
+-----------------
+
+Command:
+ls -S | head -n 1
+
+Output:
+config_backup_20260222.tar.gz
+
+
+Nested Command Substitution
+---------------------------
+
+Command:
+echo "Newest file was modified at $(date -r $(ls -t | head -n 1))"
+
+Output:
+Newest file was modified at Sat Feb 22 10:50:12 UTC 2026
+
+
+Complex Pipeline Example
+------------------------
+
+Command:
+echo "The largest file is $(du -h $(find . -type f) | sort -h | tail -n 1)"
+
+Output:
+The largest file is 4.0K    ./config_backup_20260222.tar.gz
+
+
+Cleanup Verification
+--------------------
+
+Command:
+ls
+
+Output:
+Desktop  Documents
+
+
+============================================================
+End of Lab 03 Output
+============================================================
