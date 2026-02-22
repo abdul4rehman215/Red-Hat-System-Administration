@@ -1,0 +1,79 @@
+# ===============================
+# Lab 30 – journalctl Output
+# ===============================
+
+$ journalctl
+Feb 22 12:40:11 ip-172-31-10-304 systemd[1]: Started Session 15 of User toor.
+Feb 22 12:41:02 ip-172-31-10-304 sshd[1243]: Accepted publickey for toor from 172.31.10.1 port 53210 ssh2
+Feb 22 12:41:02 ip-172-31-10-304 systemd-logind[682]: New session 16 of user toor.
+Feb 22 12:42:19 ip-172-31-10-304 CRON[1522]: pam_unix(cron:session): session opened for user root(uid=0)
+...
+-- Logs begin at Fri 2026-02-21 08:00:02 UTC, end at Sat 2026-02-22 13:30:11 UTC. --
+
+
+$ sudo systemctl status systemd-journald
+● systemd-journald.service - Journal Service
+   Loaded: loaded (/usr/lib/systemd/system/systemd-journald.service; static)
+   Active: active (running) since Sat 2026-02-22 08:00:03 UTC
+
+
+$ journalctl --since "1 hour ago"
+Feb 22 12:35:02 ip-172-31-10-304 sshd[1243]: Accepted publickey for toor
+Feb 22 12:40:11 ip-172-31-10-304 systemd[1]: Started Session 15 of User toor.
+Feb 22 12:42:19 ip-172-31-10-304 CRON[1522]: session opened for user root
+
+
+$ journalctl --since "09:00:00" --until "10:00:00"
+Feb 22 09:12:03 ip-172-31-10-304 systemd[1]: Starting Daily apt upgrade...
+Feb 22 09:15:12 ip-172-31-10-304 systemd[1]: Finished Daily apt upgrade.
+
+
+$ journalctl -u ssh
+Feb 22 12:41:02 ip-172-31-10-304 sshd[1243]: Accepted publickey for toor
+Feb 22 12:41:05 ip-172-31-10-304 sshd[1243]: pam_unix(sshd:session): session opened
+
+
+$ journalctl -u ssh --since "today"
+Feb 22 08:15:11 ip-172-31-10-304 sshd[1200]: Server listening on 0.0.0.0 port 22.
+Feb 22 12:41:02 ip-172-31-10-304 sshd[1243]: Accepted publickey for toor
+
+
+$ journalctl -p err
+Feb 22 11:10:22 ip-172-31-10-304 kernel: usb 1-1: device descriptor read/64, error -32
+Feb 22 11:45:12 ip-172-31-10-304 systemd[1]: Failed to start Example Service.
+
+
+$ journalctl -p warning..emerg
+Feb 22 10:15:21 ip-172-31-10-304 kernel: warning: CPU temperature high
+Feb 22 11:45:12 ip-172-31-10-304 systemd[1]: Failed to start Example Service.
+
+
+$ journalctl --list-boots
+-1  5a3d2e1f9a9d4b4d9e9a8c7b6f5e4d3c Fri 2026-02-21 08:00:02 UTC—Fri 2026-02-21 23:59:59 UTC
+ 0  8c7e6a5b4d3f2a1e9d8c7b6f5e4d3c2b Sat 2026-02-22 08:00:02 UTC—now
+
+
+$ journalctl -b -1
+Feb 21 08:00:03 ip-172-31-10-304 systemd[1]: Starting system...
+...
+
+
+$ journalctl -f
+Feb 22 13:32:01 ip-172-31-10-304 CRON[2001]: session opened for user root
+Feb 22 13:32:01 ip-172-31-10-304 CRON[2002]: session closed for user root
+
+
+$ journalctl -u ssh --since "1 hour ago" -o json
+{
+ "__REALTIME_TIMESTAMP":"1708602000000000",
+ "_SYSTEMD_UNIT":"ssh.service",
+ "MESSAGE":"Accepted publickey for toor from 172.31.10.1 port 53210 ssh2"
+}
+
+
+$ journalctl --disk-usage
+Archived and active journals take up 48.0M in the file system.
+
+
+$ sudo journalctl --vacuum-size=100M
+Vacuuming done, freed 0B of archived journals.
