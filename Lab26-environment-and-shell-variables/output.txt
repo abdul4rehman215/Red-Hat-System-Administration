@@ -1,0 +1,124 @@
+============================================================
+Lab 26 – Environment and Shell Variables
+Environment: Ubuntu 24.04.1 LTS
+User: toor
+Bash Version: 5.2
+============================================================
+
+------------------------------------------------------------
+Task 1: Working with Environment Variables
+------------------------------------------------------------
+
+toor@ip-172-31-10-241:~$ printenv
+
+SHELL=/bin/bash
+PWD=/home/toor
+LOGNAME=toor
+HOME=/home/toor
+LANG=C.UTF-8
+TERM=xterm-256color
+USER=toor
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+SSH_CLIENT=172.31.10.1 53214 22
+SSH_TTY=/dev/pts/0
+
+
+------------------------------------------------------------
+View Specific Variables
+------------------------------------------------------------
+
+toor@ip-172-31-10-241:~$ echo $HOME
+
+/home/toor
+
+
+toor@ip-172-31-10-241:~$ echo $PATH
+
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+
+------------------------------------------------------------
+Set Temporary Environment Variable
+------------------------------------------------------------
+
+toor@ip-172-31-10-241:~$ export LAB_USER="dev_user"
+
+
+Verify:
+
+toor@ip-172-31-10-241:~$ echo $LAB_USER
+
+dev_user
+
+
+------------------------------------------------------------
+Make Variable Persistent
+------------------------------------------------------------
+
+(Added to ~/.bashrc)
+
+export PROJECT_DIR="/opt/my_project"
+
+
+toor@ip-172-31-10-241:~$ source ~/.bashrc
+
+
+Verify:
+
+toor@ip-172-31-10-241:~$ echo $PROJECT_DIR
+
+/opt/my_project
+
+
+------------------------------------------------------------
+Task 2: Shell Variables in Scripts
+------------------------------------------------------------
+
+toor@ip-172-31-10-241:~$ ./variables.sh
+
+Welcome toor! Today is Sat Feb 22 11:42:18 UTC 2026
+
+
+------------------------------------------------------------
+Variable Scope Demonstration
+------------------------------------------------------------
+
+toor@ip-172-31-10-241:~$ ./scope_demo.sh
+
+Inside function: I'm global, I'm local
+Outside: I'm global
+Local outside:
+
+
+------------------------------------------------------------
+Task 3: Automation with Variables
+------------------------------------------------------------
+
+toor@ip-172-31-10-241:~$ ./app.sh
+
+Running with:
+Retries: 3
+Log Level: DEBUG
+
+
+Verify Backup Directory:
+
+toor@ip-172-31-10-241:~$ ls -ld /var/backups
+
+drwxr-xr-x 2 root root 4096 Feb 22 11:45 /var/backups
+
+
+------------------------------------------------------------
+System Report Script
+------------------------------------------------------------
+
+toor@ip-172-31-10-241:~$ ./system_report.sh
+
+System Report:
+Active users: 1
+Root FS usage: 34%
+
+
+============================================================
+End of Lab 26 Output
+============================================================
