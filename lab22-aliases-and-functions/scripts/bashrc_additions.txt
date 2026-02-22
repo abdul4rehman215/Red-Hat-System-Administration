@@ -1,0 +1,28 @@
+# ============================================================
+# Lab 22 – Aliases and Functions
+# File: ~/.bashrc additions
+# Environment: CentOS Linux 7 (Core)
+# User: centos
+# ============================================================
+
+
+# ------------------------------------------------------------
+# Persistent Aliases
+# ------------------------------------------------------------
+
+# Quick clear screen
+alias c='clear'
+
+# System update shortcut
+alias update='sudo dnf update -y'
+
+
+# ------------------------------------------------------------
+# Container cleanup function (persistent)
+# ------------------------------------------------------------
+
+# Container cleanup function
+function pclean() {
+ podman container prune -f
+ podman image prune -a -f
+}
