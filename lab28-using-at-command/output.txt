@@ -1,0 +1,183 @@
+============================================================
+Lab 28 – Using at Command for Scheduling
+Environment: CentOS Linux 7 (Core)
+User: centos
+Shell: Bash 4.2
+============================================================
+
+------------------------------------------------------------
+Step 1: Enable and Start atd Service
+------------------------------------------------------------
+
+-bash-4.2$ sudo systemctl enable --now atd
+
+Created symlink from /etc/systemd/system/multi-user.target.wants/atd.service to /usr/lib/systemd/system/atd.service.
+
+
+Verify Service Status:
+
+-bash-4.2$ systemctl status atd
+
+● atd.service - Deferred execution scheduler
+   Loaded: loaded (/usr/lib/systemd/system/atd.service; enabled)
+   Active: active (running) since Sat 2026-02-22 12:55:41 UTC; 5s ago
+ Main PID: 2154 (atd)
+
+
+------------------------------------------------------------
+Step 2: Verify Installation
+------------------------------------------------------------
+
+-bash-4.2$ at -V
+
+at version 3.1.20
+
+
+------------------------------------------------------------
+Task 1: Create Backup Directory
+------------------------------------------------------------
+
+-bash-4.2$ mkdir ~/backups
+
+
+Verify:
+
+-bash-4.2$ ls
+
+backups
+
+
+------------------------------------------------------------
+Create Backup Script
+------------------------------------------------------------
+
+-bash-4.2$ chmod +x ~/backup_script.sh
+
+
+Verify permissions:
+
+-bash-4.2$ ls -l ~/backup_script.sh
+
+-rwxr-xr-x 1 centos centos 189 Feb 22 12:57 /home/centos/backup_script.sh
+
+
+------------------------------------------------------------
+Schedule Backup in 5 Minutes
+------------------------------------------------------------
+
+-bash-4.2$ at now + 5 minutes -f ~/backup_script.sh
+
+job 1 at Sat Feb 22 13:02:00 2026
+
+
+Verify Scheduled Job:
+
+-bash-4.2$ atq
+
+1	Sat Feb 22 13:02:00 2026 a centos
+
+
+------------------------------------------------------------
+Alternative Time Formats
+------------------------------------------------------------
+
+-bash-4.2$ at 11:30 PM tomorrow
+
+at> echo "Reminder job" >> ~/reminder.log
+at> <Ctrl+D>
+
+job 2 at Sun Feb 23 23:30:00 2026
+
+
+-bash-4.2$ at 9:00 AM next week
+
+at> date >> ~/nextweek.log
+at> <Ctrl+D>
+
+job 3 at Mon Mar 02 09:00:00 2026
+
+
+-bash-4.2$ at now + 1 hour
+
+at> echo "One hour test" >> ~/hour_test.log
+at> <Ctrl+D>
+
+job 4 at Sat Feb 22 13:58:00 2026
+
+
+------------------------------------------------------------
+List All Scheduled Jobs
+------------------------------------------------------------
+
+-bash-4.2$ atq
+
+1	Sat Feb 22 13:02:00 2026 a centos
+2	Sun Feb 23 23:30:00 2026 a centos
+3	Mon Mar 02 09:00:00 2026 a centos
+4	Sat Feb 22 13:58:00 2026 a centos
+
+
+------------------------------------------------------------
+Remove Job 4
+------------------------------------------------------------
+
+-bash-4.2$ atrm 4
+
+
+Verify:
+
+-bash-4.2$ atq
+
+1	Sat Feb 22 13:02:00 2026 a centos
+2	Sun Feb 23 23:30:00 2026 a centos
+3	Mon Mar 02 09:00:00 2026 a centos
+
+
+------------------------------------------------------------
+View at Spool Files
+------------------------------------------------------------
+
+-bash-4.2$ sudo ls /var/spool/at
+
+a00001019c2b34
+a00002019c2b35
+a00003019c2b36
+
+
+View Job Content:
+
+-bash-4.2$ sudo cat /var/spool/at/a00001019c2b34
+
+#!/bin/sh
+# atrun uid=1000 gid=1000
+cd /home/centos || exit 1
+/home/centos/backup_script.sh
+
+
+------------------------------------------------------------
+Troubleshooting Checks
+------------------------------------------------------------
+
+-bash-4.2$ timedatectl
+
+Local time: Sat 2026-02-22 12:59:01 UTC
+Time zone: UTC (UTC, +0000)
+
+
+------------------------------------------------------------
+Cleanup: Remove All Test Jobs
+------------------------------------------------------------
+
+-bash-4.2$ atq | awk '{print $1}' | xargs atrm
+
+
+Verify:
+
+-bash-4.2$ atq
+
+No jobs remaining.
+
+
+============================================================
+End of Lab 28 Output
+============================================================
