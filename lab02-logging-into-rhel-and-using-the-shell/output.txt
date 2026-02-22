@@ -1,0 +1,222 @@
+========================================
+Lab 02 - Logging into RHEL and Using the Shell
+Execution Output Log
+========================================
+
+
+--------------------------------------------------
+Task 1: Local Console Login
+--------------------------------------------------
+
+Red Hat Enterprise Linux 9.3 (Plow)
+Kernel 5.14.0-362.24.1.el9_3.x86_64 on an x86_64
+
+localhost login: student
+Password:
+Last login: Thu Feb 22 10:31:18 UTC 2026 on tty1
+[student@localhost ~]$
+
+
+--------------------------------------------------
+Task 2.1: Verify SSH Service
+--------------------------------------------------
+
+[student@localhost ~]$ sudo systemctl status sshd
+
+● sshd.service - OpenSSH server daemon
+     Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled; preset: enabled)
+     Active: active (running) since Thu 2026-02-22 10:27:54 UTC; 4min 12s ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+   Main PID: 1027 (sshd)
+      Tasks: 1 (limit: 23000)
+     Memory: 3.6M
+        CPU: 112ms
+     CGroup: /system.slice/sshd.service
+             └─1027 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
+
+Feb 22 10:27:54 localhost systemd[1]: Starting OpenSSH server daemon...
+Feb 22 10:27:54 localhost sshd[1027]: Server listening on 0.0.0.0 port 22.
+Feb 22 10:27:54 localhost sshd[1027]: Server listening on :: port 22.
+Feb 22 10:27:54 localhost systemd[1]: Started OpenSSH server daemon.
+
+
+--------------------------------------------------
+Task 2.2: Check IP Address
+--------------------------------------------------
+
+[student@localhost ~]$ ip a
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc fq_codel state UP group default qlen 1000
+    link/ether 02:3a:8f:2c:11:7b brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic noprefixroute eth0
+       valid_lft 3381sec preferred_lft 3381sec
+    inet6 fe80::3a:8fff:fe2c:117b/64 scope link noprefixroute
+       valid_lft forever preferred_lft forever
+
+Noted IP for SSH: 10.0.2.15
+
+
+--------------------------------------------------
+Task 2.3: SSH Remote Connection
+--------------------------------------------------
+
+toor@ip-172-31-10-219:~$ ssh student@10.0.2.15
+
+The authenticity of host '10.0.2.15 (10.0.2.15)' can't be established.
+ED25519 key fingerprint is SHA256:QwM1w4d0c3rJmVhH+1m2Gqv3tqf3l8y7Yxgk2wQp1i8.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '10.0.2.15' (ED25519) to the list of known hosts.
+student@10.0.2.15's password:
+Last login: Thu Feb 22 10:31:18 2026 from 172.31.10.219
+[student@localhost ~]$
+
+Remote SSH session confirmed.
+
+
+--------------------------------------------------
+Troubleshooting: Connectivity Check
+--------------------------------------------------
+
+toor@ip-172-31-10-219:~$ ping -c 3 10.0.2.15
+
+PING 10.0.2.15 (10.0.2.15) 56(84) bytes of data.
+64 bytes from 10.0.2.15: icmp_seq=1 ttl=64 time=0.77 ms
+64 bytes from 10.0.2.15: icmp_seq=2 ttl=64 time=0.64 ms
+64 bytes from 10.0.2.15: icmp_seq=3 ttl=64 time=0.59 ms
+
+--- 10.0.2.15 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2041ms
+rtt min/avg/max/mdev = 0.590/0.667/0.769/0.075 ms
+
+
+--------------------------------------------------
+Troubleshooting: Firewall Status
+--------------------------------------------------
+
+[student@localhost ~]$ sudo firewall-cmd --list-all
+
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: eth0
+  sources:
+  services: cockpit dhcpv6-client ssh
+  ports:
+  protocols:
+  forward: yes
+  masquerade: no
+  forward-ports:
+  source-ports:
+  icmp-blocks:
+  rich rules:
+
+
+--------------------------------------------------
+Task 3.1: Print Working Directory
+--------------------------------------------------
+
+[student@localhost ~]$ pwd
+
+/home/student
+
+
+--------------------------------------------------
+Task 3.2: List Directory Contents
+--------------------------------------------------
+
+[student@localhost ~]$ ls
+
+Desktop  Documents  Downloads  Music  Pictures  Public  Templates  Videos
+
+
+[student@localhost ~]$ ls -lh
+
+total 0
+drwxr-xr-x. 2 student student 6 Feb 22 10:27 Desktop
+drwxr-xr-x. 2 student student 6 Feb 22 10:27 Documents
+drwxr-xr-x. 2 student student 6 Feb 22 10:27 Downloads
+drwxr-xr-x. 2 student student 6 Feb 22 10:27 Music
+drwxr-xr-x. 2 student student 6 Feb 22 10:27 Pictures
+drwxr-xr-x. 2 student student 6 Feb 22 10:27 Public
+drwxr-xr-x. 2 student student 6 Feb 22 10:27 Templates
+drwxr-xr-x. 2 student student 6 Feb 22 10:27 Videos
+
+
+[student@localhost ~]$ ls -a
+
+.  ..  .bash_history  .bash_logout  .bash_profile  .bashrc  Desktop  Documents  Downloads  Music  Pictures  Public  Templates  Videos
+
+
+--------------------------------------------------
+Task 3.3: Manual Page
+--------------------------------------------------
+
+[student@localhost ~]$ man ls
+
+LS(1)                            User Commands                           LS(1)
+
+NAME
+       ls - list directory contents
+
+SYNOPSIS
+       ls [OPTION]... [FILE]...
+
+DESCRIPTION
+       List information about the FILEs (the current directory by default).
+
+       -a, --all
+              do not ignore entries starting with .
+
+       -l     use a long listing format
+
+(Pressed q to exit the man page)
+
+
+--------------------------------------------------
+Task 3.4: Exit Remote Session
+--------------------------------------------------
+
+[student@localhost ~]$ exit
+
+logout
+Connection to 10.0.2.15 closed.
+toor@ip-172-31-10-219:~$
+
+
+--------------------------------------------------
+Task 4: View and Modify PS1
+--------------------------------------------------
+
+toor@ip-172-31-10-219:~$ echo $PS1
+
+[\u@\h \W]\$ 
+
+
+toor@ip-172-31-10-219:~$ PS1="[\u@\h \W \t]\$ "
+
+[toor@ip-172-31-10-219 ~ 10:37:12]$ pwd
+
+/home/toor
+
+
+--------------------------------------------------
+Persist PS1 Change
+--------------------------------------------------
+
+[toor@ip-172-31-10-219 ~ 10:37:28]$ nano ~/.bashrc
+(Added: export PS1="[\u@\h \W \t]\$ ")
+
+[toor@ip-172-31-10-219 ~ 10:38:06]$ source ~/.bashrc
+
+[toor@ip-172-31-10-219 ~ 10:38:10]$ echo "Prompt updated and persistent."
+
+Prompt updated and persistent.
