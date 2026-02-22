@@ -1,4 +1,4 @@
-# 🎤 Interview Questions – Lab 38: Using setenforce and semanage for SELinux
+# 🎤 Interview Q&A – Lab 38: Using setenforce and semanage for SELinux
 
 ---
 
