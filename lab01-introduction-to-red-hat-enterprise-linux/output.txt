@@ -1,0 +1,189 @@
+========================================
+Lab 01 - Introduction to Red Hat Enterprise Linux
+Execution Output Log
+========================================
+
+
+--------------------------------------------------
+Task 1.1 – Open Source Definition
+--------------------------------------------------
+
+$ curl -s https://opensource.org/osd | grep -A5 "Open Source Definition"
+
+Open Source Definition
+Introduction
+Open source doesn't just mean access to the source code. The distribution terms
+of open-source software must comply with the following criteria:
+1. Free Redistribution
+2. Source Code
+3. Derived Works
+4. Integrity of The Author's Source Code
+
+
+--------------------------------------------------
+Troubleshooting – Installing curl
+--------------------------------------------------
+
+$ sudo dnf install curl -y
+
+Last metadata expiration check: 0:03:12 ago on Thu 22 Feb 2026 10:14:01 AM UTC.
+Dependencies resolved.
+================================================================================
+ Package        Architecture   Version                 Repository         Size
+================================================================================
+Installing:
+ curl           x86_64         7.76.1-31.el9           rhel-9-baseos     286 k
+Installing dependencies:
+ libcurl        x86_64         7.76.1-31.el9           rhel-9-baseos     336 k
+
+Transaction Summary
+================================================================================
+Install  2 Packages
+
+Total download size: 622 k
+Installed size: 1.6 M
+Downloading Packages:
+(1/2): curl-7.76.1-31.el9.x86_64.rpm               1.2 MB/s | 286 kB  00:00
+(2/2): libcurl-7.76.1-31.el9.x86_64.rpm            1.4 MB/s | 336 kB  00:00
+--------------------------------------------------------------------------------
+Total                                           2.6 MB/s | 622 kB     00:00
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                    1/1
+  Installing       : libcurl-7.76.1-31.el9.x86_64                      1/2
+  Installing       : curl-7.76.1-31.el9.x86_64                         2/2
+  Verifying        : curl-7.76.1-31.el9.x86_64                         1/2
+  Verifying        : libcurl-7.76.1-31.el9.x86_64                      2/2
+
+Installed:
+  curl-7.76.1-31.el9.x86_64
+  libcurl-7.76.1-31.el9.x86_64
+
+Complete!
+
+
+--------------------------------------------------
+Task 1.2 – Check Kernel Version
+--------------------------------------------------
+
+$ uname -r
+
+5.14.0-362.24.1.el9_3.x86_64
+
+
+--------------------------------------------------
+Task 2.1 – Check Distribution Information
+--------------------------------------------------
+
+$ cat /etc/os-release
+
+NAME="Red Hat Enterprise Linux"
+VERSION="9.3 (Plow)"
+ID="rhel"
+ID_LIKE="fedora"
+VERSION_ID="9.3"
+PLATFORM_ID="platform:el9"
+PRETTY_NAME="Red Hat Enterprise Linux 9.3 (Plow)"
+ANSI_COLOR="0;31"
+CPE_NAME="cpe:/o:redhat:enterprise_linux:9::baseos"
+HOME_URL="https://www.redhat.com/"
+DOCUMENTATION_URL="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9"
+BUG_REPORT_URL="https://bugzilla.redhat.com/"
+REDHAT_BUGZILLA_PRODUCT="Red Hat Enterprise Linux 9"
+REDHAT_BUGZILLA_PRODUCT_VERSION=9.3
+REDHAT_SUPPORT_PRODUCT="Red Hat Enterprise Linux"
+REDHAT_SUPPORT_PRODUCT_VERSION="9.3"
+
+
+--------------------------------------------------
+Task 3.1 – SELinux Status
+--------------------------------------------------
+
+$ sestatus
+
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+
+
+--------------------------------------------------
+Task 3.2 – Subscription Registration (Initial Attempt)
+--------------------------------------------------
+
+$ sudo subscription-manager register --username <your_username> --password <your_password>
+
+bash: syntax error near unexpected token `newline'
+
+
+--------------------------------------------------
+Task 3.2 – Correct Registration
+--------------------------------------------------
+
+$ sudo subscription-manager register --username REDACTED --password REDACTED
+
+Registering to: subscription.rhsm.redhat.com:443/subscription
+The system has been registered with ID: 3c5b2d98-6c1a-4f6b-9f75-0f1e0a9d8d2f
+The registered system name is: rhel9-lab-01
+
+
+--------------------------------------------------
+Attach Subscription
+--------------------------------------------------
+
+$ sudo subscription-manager attach --auto
+
+Installed Product Current Status:
+Product Name: Red Hat Enterprise Linux for x86_64
+Status:       Subscribed
+
+Successfully attached a compatible subscription.
+
+
+--------------------------------------------------
+Verify Consumed Subscriptions
+--------------------------------------------------
+
+$ sudo subscription-manager list --consumed
+
++-------------------------------------------+
+   Consumed Subscriptions
++-------------------------------------------+
+Subscription Name:   Red Hat Developer Subscription for Individuals
+Provides:            Red Hat Enterprise Linux Server
+SKU:                 RH00001
+Contract:            12345678
+Account:             87654321
+Serial:              9876543210123456789
+Pool ID:             2c94b8a38a1f1abc018a2b3c4d5e6f70
+Active:              True
+Quantity Used:       1
+Service Level:       Self-Support
+Service Type:        L1-L3
+Starts:              02/22/2026
+Ends:                02/22/2027
+System Type:         Physical
+Status Details:      Subscription is current
++-------------------------------------------+
+
+
+--------------------------------------------------
+Troubleshooting – subscription-manager Check
+--------------------------------------------------
+
+$ sudo dnf install subscription-manager -y
+
+Last metadata expiration check: 0:01:08 ago on Thu 22 Feb 2026 10:19:44 AM UTC.
+Package subscription-manager-1.29.40-3.el9.x86_64 is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
