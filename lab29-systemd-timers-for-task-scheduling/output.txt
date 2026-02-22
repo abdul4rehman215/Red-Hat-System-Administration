@@ -1,0 +1,68 @@
+# ===============================
+# Lab 29 – Systemd Timers Output
+# ===============================
+
+$ systemctl --version
+systemd 255 (255.4-1ubuntu8.3)
++PAM +AUDIT +SELINUX +APPARMOR +IMA +SMACK +SYSVINIT +UTMP
+
+
+$ systemctl list-timers --all
+NEXT                         LEFT          LAST                         PASSED       UNIT                         ACTIVATES
+Sun 2026-02-23 00:00:00 UTC  11h left      Sat 2026-02-22 00:00:01 UTC  12h ago      apt-daily.timer              apt-daily.service
+Sun 2026-02-23 06:00:00 UTC  17h left      Sat 2026-02-22 06:00:01 UTC  6h ago       apt-daily-upgrade.timer      apt-daily-upgrade.service
+
+2 timers listed.
+
+
+$ sudo systemctl enable --now maintenance.timer
+Created symlink /etc/systemd/system/timers.target.wants/maintenance.timer → /etc/systemd/system/maintenance.timer.
+
+
+$ systemctl status maintenance.timer
+● maintenance.timer - Run maintenance daily
+     Loaded: loaded (/etc/systemd/system/maintenance.timer; enabled)
+     Active: active (waiting) since Sat 2026-02-22 13:15:42 UTC; 10s ago
+    Trigger: Sun 2026-02-23 00:00:00 UTC; 10h left
+   Triggers: ● maintenance.service
+
+
+$ systemd-analyze calendar "Mon *-*-* 02:00:00"
+  Normalized form: Mon *-*-* 02:00:00
+  Next elapse: Mon 2026-02-23 02:00:00 UTC
+
+
+$ systemctl list-timers
+NEXT                         LEFT      LAST  PASSED  UNIT               ACTIVATES
+Sat 2026-02-22 14:00:00 UTC  40min     -     -       maintenance.timer  maintenance.service
+
+
+$ journalctl -u maintenance.service
+Feb 22 13:00:01 ip-172-31-10-288 systemd[1]: Started System Maintenance Task.
+Feb 22 13:00:01 ip-172-31-10-288 bash[3421]: Performing system maintenance at Sat Feb 22 13:00:01 UTC 2026
+
+
+$ systemd-analyze calendar --iterations=5 "hourly"
+  Normalized form: hourly
+  Next elapse: Sat 2026-02-22 14:00:00 UTC
+
+
+$ systemctl status maintenance.service
+● maintenance.service - System Maintenance Task
+     Loaded: loaded (/etc/systemd/system/maintenance.service; static)
+     Active: inactive (dead)
+
+
+# Cleanup Output
+
+$ sudo systemctl stop maintenance.timer
+(No output)
+
+$ sudo rm /etc/systemd/system/maintenance.service
+(No output)
+
+$ sudo rm /etc/systemd/system/maintenance.timer
+(No output)
+
+$ sudo systemctl daemon-reload
+(No output)
