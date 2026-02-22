@@ -1,0 +1,119 @@
+# ==========================================
+# Lab 32 – rsyslog Centralized Logging Output
+# Server: 192.168.1.100 (logserver.example.com)
+# Client: 192.168.1.101 (client.example.com)
+# ==========================================
+
+
+# ----------------------------
+# Task 1: Install rsyslog
+# ----------------------------
+
+# [SERVER] sudo yum install -y rsyslog
+Package rsyslog-8.24.0-57.el7.x86_64 already installed and latest version
+Nothing to do
+
+
+# [CLIENT] sudo yum install -y rsyslog
+Package rsyslog-8.24.0-57.el7.x86_64 already installed and latest version
+Nothing to do
+
+✅ Rsyslog installed successfully on both systems.
+
+
+# ----------------------------
+# Task 2: Configure SERVER
+# ----------------------------
+
+# [SERVER] sudo systemctl restart rsyslog
+(No output)
+
+# [SERVER] sudo systemctl enable rsyslog
+Created symlink from /etc/systemd/system/multi-user.target.wants/rsyslog.service to /usr/lib/systemd/system/rsyslog.service.
+
+
+# [SERVER] sudo firewall-cmd --add-port=514/tcp --permanent
+success
+
+# [SERVER] sudo firewall-cmd --add-port=514/udp --permanent
+success
+
+# [SERVER] sudo firewall-cmd --reload
+success
+
+
+# [SERVER] sudo ss -tulnp | grep 514
+udp   UNCONN 0      0      *:514                 *:*     users:(("rsyslogd",pid=1342))
+tcp   LISTEN 0      100    *:514                 *:*     users:(("rsyslogd",pid=1342))
+
+✅ Server ready to receive logs.
+
+
+# ----------------------------
+# Task 3: Configure CLIENT forwarding
+# ----------------------------
+
+# [CLIENT] sudo systemctl restart rsyslog
+(No output)
+
+# [CLIENT] sudo systemctl status rsyslog
+● rsyslog.service - System Logging Service
+   Loaded: loaded (/usr/lib/systemd/system/rsyslog.service; enabled)
+   Active: active (running)
+
+✅ Client rsyslog is active.
+
+
+# ----------------------------
+# Task 4: Test log forwarding
+# ----------------------------
+
+# [CLIENT] logger "This is a test message from client"
+(No output)
+
+
+# [SERVER] sudo ls /var/log/remotehost/
+client.example.com
+
+
+# [SERVER] sudo tail -f /var/log/remotehost/client.example.com/logger.log
+Feb 22 15:10:42 client.example.com logger: This is a test message from client
+
+✅ Log successfully forwarded to central server.
+
+
+# ----------------------------
+# Task 5: Analyze centralized logs
+# ----------------------------
+
+# [SERVER] journalctl -f
+Feb 22 15:10:42 client.example.com logger: This is a test message from client
+
+
+# [SERVER] sudo ls /var/log/remotehost/client.example.com/
+logger.log
+sshd.log
+cron.log
+
+
+# [SERVER] sudo grep "error" /var/log/remotehost/client.example.com/*.log
+/var/log/remotehost/client.example.com/sshd.log:Failed password for invalid user admin
+
+✅ Logs organized per client and program.
+
+
+# ----------------------------
+# Optional / Troubleshooting
+# ----------------------------
+
+# [SERVER/CLIENT] sudo tail -f /var/log/messages
+(Output varies as system logs update)
+
+# [SERVER/CLIENT] sudo systemctl status rsyslog
+(Output varies; should show active/running)
+
+# [SERVER/CLIENT] sudo setenforce 0
+(Output depends on SELinux state; may show "setenforce: SELinux is disabled")
+
+# [CLIENT] telnet 192.168.1.100 514
+(Output depends on telnet availability and connectivity)
