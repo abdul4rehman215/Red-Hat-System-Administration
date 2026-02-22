@@ -1,0 +1,155 @@
+============================================================
+Lab 22 – Aliases and Functions
+Execution Output Log
+Environment: CentOS Linux 7 (Core)
+User: centos
+============================================================
+
+
+------------------------------------------------------------
+Step 1 – Verify Bash Installation
+------------------------------------------------------------
+
+-bash-4.2$ bash --version
+
+GNU bash, version 4.2.46(2)-release (x86_64-redhat-linux-gnu)
+Copyright (C) 2011 Free Software Foundation, Inc.
+
+
+------------------------------------------------------------
+Step 2 – Verify Podman Installation
+------------------------------------------------------------
+
+-bash-4.2$ podman --version
+
+podman version 4.6.1
+
+
+------------------------------------------------------------
+Task 1 – Test Temporary Alias (ll)
+------------------------------------------------------------
+
+-bash-4.2$ ll
+
+total 20
+drwx------. 3 centos centos  100 Feb 22 10:15 .
+drwxr-xr-x. 3 root   root    20 Feb 22 09:55 ..
+-rw-------. 1 centos centos 124 Feb 22 10:00 .bash_history
+-rw-r--r--. 1 centos centos 231 Feb 22 09:55 .bash_logout
+-rw-r--r--. 1 centos centos 176 Feb 22 09:55 .bash_profile
+-rw-r--r--. 1 centos centos 124 Feb 22 09:55 .bashrc
+
+
+------------------------------------------------------------
+Task 1 – Test Temporary Alias (pps)
+------------------------------------------------------------
+
+-bash-4.2$ pps
+
+ID              NAMES           STATUS
+d3f1c8a92b12    web_app         Up 3 minutes
+b91a2e4d66ff    db_container    Exited (0) 2 hours ago
+
+
+------------------------------------------------------------
+Task 1 – Test Persistent Alias (clear)
+------------------------------------------------------------
+
+-bash-4.2$ c
+
+(Screen cleared successfully)
+
+
+------------------------------------------------------------
+Task 1 – Test Persistent Alias (update)
+------------------------------------------------------------
+
+-bash-4.2$ update
+
+Last metadata expiration check: 0:15:32 ago on Sat Feb 22 10:02:11 2026.
+Dependencies resolved.
+Nothing to do.
+Complete!
+
+
+------------------------------------------------------------
+Task 2 – Run Function pcount
+------------------------------------------------------------
+
+-bash-4.2$ pcount
+
+CONTAINER ID  IMAGE               COMMAND       CREATED        STATUS                     NAMES
+d3f1c8a92b12   nginx:latest        nginx -g      3 minutes ago  Up 3 minutes               web_app
+b91a2e4d66ff   mysql:latest        mysqld        2 hours ago    Exited (0) 2 hours ago     db_container
+Total containers: 2
+
+
+------------------------------------------------------------
+Task 2 – Run Function cstate start db_container
+------------------------------------------------------------
+
+-bash-4.2$ cstate start db_container
+
+db_container
+Container started successfully.
+
+
+------------------------------------------------------------
+Task 2 – Run Cleanup Function pclean
+------------------------------------------------------------
+
+-bash-4.2$ pclean
+
+Deleted Containers:
+b91a2e4d66ff
+
+Deleted Images:
+<none>
+
+
+------------------------------------------------------------
+Task 3 – Execute manage_system.sh
+------------------------------------------------------------
+
+-bash-4.2$ ./manage_system.sh
+
+System update starting...
+Last metadata expiration check: 0:20:14 ago on Sat Feb 22 10:02:11 2026.
+Dependencies resolved.
+Nothing to do.
+Complete!
+
+Current containers:
+ID              NAMES           STATUS
+d3f1c8a92b12    web_app         Up 5 minutes
+
+
+------------------------------------------------------------
+Task 3 – Execute container_report.sh
+------------------------------------------------------------
+
+-bash-4.2$ ./container_report.sh
+
+=== Container Report ===
+ID              NAMES           STATUS
+d3f1c8a92b12    web_app         Up 6 minutes
+
+Disk Usage:
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          3         1         410MB     300MB (73%)
+Containers      1         1         50MB      0B (0%)
+Local Volumes   2         1         25MB      5MB (20%)
+
+
+------------------------------------------------------------
+Cleanup – Remove Temporary Aliases
+------------------------------------------------------------
+
+-bash-4.2$ unalias ll
+
+-bash-4.2$ unalias pps
+
+
+============================================================
+End of Lab 02 Execution Log
+============================================================
