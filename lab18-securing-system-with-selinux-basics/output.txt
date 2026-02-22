@@ -1,0 +1,50 @@
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Max kernel policy version:      33
+
+Installed:
+  setroubleshoot-3.3.27-6.el9
+  setools-console-4.4.0-2.el9
+  policycoreutils-python-utils-3.4-1.el9
+Complete!
+
+unconfined_u:object_r:user_tmp_t:s0 /tmp/testfile.txt
+system_u:object_r:tmp_t:s0 /tmp
+
+unconfined_u:object_r:default_t:s0 /web
+unconfined_u:object_r:httpd_sys_content_t:s0 /web
+
+Relabeled /web from unconfined_u:object_r:httpd_sys_content_t:s0 to unconfined_u:object_r:default_t:s0
+unconfined_u:object_r:default_t:s0 /web
+
+<html>
+<head><title>403 Forbidden</title></head>
+<body>
+<h1>Forbidden</h1>
+</body>
+</html>
+
+type=AVC msg=audit(02/22/2026 19:21:34.123:421): avc:  denied  { read } for  pid=2531 comm="httpd" name="index.html" dev="nvme0n1p1" ino=345234 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:user_home_t:s0 tclass=file permissive=0
+
+SELinux is preventing httpd from reading index.html.
+
+*****  Plugin restorecon (99.5 confidence) suggests   *******************
+
+If you want to fix the labeling,
+then you can run:
+
+restorecon -v /web/html/index.html
+
+unconfined_u:object_r:httpd_sys_content_t:s0 /web/html/index.html
+
+Permissive
+Enforcing
+
+SELinux status:                 enabled
+Current mode:                   enforcing
