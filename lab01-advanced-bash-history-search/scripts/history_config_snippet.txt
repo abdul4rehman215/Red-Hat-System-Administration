@@ -1,0 +1,74 @@
+# ============================================================
+# Lab 01 – Advanced Bash History Configuration Snippets
+# File: ~/.bashrc additions
+# Environment: Ubuntu 24.04.1 LTS
+# User: toor
+# ============================================================
+
+
+# ------------------------------------------------------------
+# Section 1 – Increase History Size
+# ------------------------------------------------------------
+
+# Number of commands to remember in current session
+HISTSIZE=5000
+
+# Number of commands to store in history file
+HISTFILESIZE=10000
+
+
+# ------------------------------------------------------------
+# Section 2 – Append History Instead of Overwriting
+# ------------------------------------------------------------
+
+# Prevent overwriting history file when multiple sessions are open
+shopt -s histappend
+
+
+# ------------------------------------------------------------
+# Section 3 – Ignore Duplicates and Space-Prefixed Commands
+# ------------------------------------------------------------
+
+# ignoredups  → ignore duplicate commands
+# ignorespace → ignore commands starting with a space
+HISTCONTROL=ignoreboth
+
+
+# ------------------------------------------------------------
+# Section 4 – Custom History Search Aliases
+# ------------------------------------------------------------
+
+# Case-sensitive history search
+alias hs='history | grep'
+
+# Case-insensitive history search
+alias hsi='history | grep -i'
+
+
+# ------------------------------------------------------------
+# Section 5 – Advanced History Frequency Analysis Function
+# ------------------------------------------------------------
+
+# Displays top 20 most frequently used commands
+function hst {
+    history | awk '{
+        print $2 " " $3 "\t" $4 "\t" $5FS$6FS$7FS$8FS$9FS$10
+    }' | sort | uniq -c | sort -nr | head -n 20
+}
+
+
+# ------------------------------------------------------------
+# End of Lab 01 Bash Enhancements
+# ------------------------------------------------------------
+
+## 📌 Notes
+
+This file represents the exact configuration added to:
+
+~/.bashrc
+
+After adding the above content, changes were applied using:
+
+source ~/.bashrc
+
+No additional scripts were created in this lab beyond shell configuration.
