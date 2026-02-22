@@ -1,0 +1,142 @@
+# ==========================================
+# Lab 34 – File Transfer with scp and rsync
+# ==========================================
+
+
+# ----------------------------
+# Prerequisite Verification
+# ----------------------------
+
+$ sudo systemctl status ssh
+● ssh.service - OpenBSD Secure Shell server
+   Loaded: loaded (/lib/systemd/system/ssh.service; enabled)
+   Active: active (running)
+
+$ rsync --version
+rsync  version 3.2.7  protocol version 31
+
+
+# ----------------------------
+# Task 1: scp File Transfer
+# ----------------------------
+
+$ echo "This is a test file" > local_file.txt
+$ cat local_file.txt
+This is a test file
+
+$ scp local_file.txt student@192.168.56.20:/home/student/
+local_file.txt  100%   21     5.2KB/s   00:00
+
+$ ssh student@192.168.56.20 "cat /home/student/local_file.txt"
+This is a test file
+
+✅ File transferred securely using SSH.
+
+
+# ----------------------------
+# scp Directory Transfer
+# ----------------------------
+
+$ mkdir local_dir
+$ touch local_dir/file1.txt local_dir/file2.txt local_dir/file3.txt
+$ ls local_dir
+file1.txt  file2.txt  file3.txt
+
+$ scp -r local_dir student@192.168.56.20:/home/student/
+file1.txt  100%    0     0.0KB/s   00:00
+file2.txt  100%    0     0.0KB/s   00:00
+file3.txt  100%    0     0.0KB/s   00:00
+
+$ ssh student@192.168.56.20 "ls -l /home/student/local_dir"
+-rw-r--r-- 1 student student 0 Feb 22 17:05 file1.txt
+-rw-r--r-- 1 student student 0 Feb 22 17:05 file2.txt
+-rw-r--r-- 1 student student 0 Feb 22 17:05 file3.txt
+
+✅ Directory transferred successfully.
+
+
+# ----------------------------
+# Task 2: rsync Synchronization
+# ----------------------------
+
+$ echo "Updated content" >> local_dir/file1.txt
+
+$ rsync -avz local_dir/ student@192.168.56.20:/home/student/remote_dir/
+sending incremental file list
+created directory /home/student/remote_dir
+./
+file1.txt
+
+sent 214 bytes  received 65 bytes  558.00 bytes/sec
+total size is 17  speedup is 0.06
+
+$ ssh student@192.168.56.20 "ls -l /home/student/remote_dir"
+-rw-r--r-- 1 student student 17 Feb 22 17:08 file1.txt
+-rw-r--r-- 1 student student 0  Feb 22 17:05 file2.txt
+-rw-r--r-- 1 student student 0  Feb 22 17:05 file3.txt
+
+📌 Only modified file transferred.
+
+
+# ----------------------------
+# Incremental Backup (Local)
+# ----------------------------
+
+$ mkdir backup
+
+$ rsync -av --delete local_dir/ backup/
+sending incremental file list
+file1.txt
+file2.txt
+file3.txt
+
+$ echo "New line" >> local_dir/file2.txt
+
+$ rsync -av --delete local_dir/ backup/
+sending incremental file list
+file2.txt
+
+📌 Only changed file updated.
+
+
+# ----------------------------
+# Secure rsync over SSH
+# ----------------------------
+
+$ rsync -avz -e ssh local_dir/ student@192.168.56.20:/home/student/secure_backup/
+sending incremental file list
+file1.txt
+file2.txt
+file3.txt
+
+$ ssh student@192.168.56.20 "ls -l /home/student/secure_backup"
+file1.txt  file2.txt  file3.txt
+
+✅ Secure synchronization successful.
+
+
+# ----------------------------
+# Advanced rsync Options
+# ----------------------------
+
+$ rsync -avz --partial --progress -e ssh local_file.txt student@192.168.56.20:/home/student/
+local_file.txt
+     21 100%   20.51kB/s    0:00:00
+
+$ rsync -avz --bwlimit=100 -e ssh local_dir/ student@192.168.56.20:/home/student/bandwidth_test/
+sending incremental file list
+file1.txt
+file2.txt
+file3.txt
+
+📌 Bandwidth limited to 100 KB/s.
+
+
+# ----------------------------
+# Cleanup
+# ----------------------------
+
+$ rm -rf local_file.txt local_dir backup
+$ ssh student@192.168.56.20 "rm -rf /home/student/local_dir"
+
+Cleanup completed successfully.
