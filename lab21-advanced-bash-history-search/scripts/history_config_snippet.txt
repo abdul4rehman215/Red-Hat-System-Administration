@@ -1,5 +1,5 @@
 # ============================================================
-# Lab 01 – Advanced Bash History Configuration Snippets
+# Lab 21 – Advanced Bash History Configuration Snippets
 # File: ~/.bashrc additions
 # Environment: Ubuntu 24.04.1 LTS
 # User: toor
