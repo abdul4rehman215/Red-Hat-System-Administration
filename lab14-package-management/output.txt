@@ -1,0 +1,94 @@
+===== TASK 1: Subscription Management =====
+
++-------------------------------------------+
+   System Status Details
++-------------------------------------------+
+Overall Status: Current
+
+Subscription Name: Red Hat Enterprise Linux Server
+Status: Subscribed
+Ends: 2026-12-31
+
+===== TASK 2: Repository Management =====
+
+repo id                               repo name                                   status
+rhel-9-baseos-rpms                    Red Hat Enterprise Linux 9 BaseOS          enabled
+rhel-9-appstream-rpms                 Red Hat Enterprise Linux 9 AppStream       enabled
+codeready-builder-for-rhel-9-rpms     CodeReady Builder for RHEL 9               disabled
+
+Enabling repository...
+Repository 'codeready-builder-for-rhel-9-rpms' is enabled.
+
+Disabled repository successfully.
+
+===== TASK 3: Package Installation =====
+
+Installing:
+ httpd-2.4.57-2.el9.x86_64
+
+Complete!
+
+httpd-2.4.57-2.el9.x86_64
+
+Removing:
+ httpd-2.4.57-2.el9.x86_64
+
+Complete!
+
+Updating system...
+Dependencies resolved.
+Nothing to do.
+Complete!
+
+===== TASK 4: Package Groups =====
+
+Available Environment Groups:
+   Server
+   Minimal Install
+   Workstation
+
+Available Groups:
+   Development Tools
+   Security Tools
+   System Tools
+
+Installing group:
+ gcc
+ make
+ gdb
+ autoconf
+ automake
+ ...
+
+Complete!
+
+===== TASK 5: Modules =====
+
+Available Modules:
+Name       Stream   Profiles      Summary
+nodejs     18       common        Javascript runtime
+nodejs     20       common        Javascript runtime
+postgresql 15       server        PostgreSQL server
+
+Enabling nodejs:18 stream...
+Complete!
+
+Installing:
+ nodejs-18.19.0-1.el9.x86_64
+
+Complete!
+
+v18.19.0
+
+===== TASK 6: Additional Verification =====
+
+DNF History:
+ID     Command line             Date and time    Action(s) Altered
+12     install httpd            2026-02-22       Install     5
+13     remove httpd             2026-02-22       Erase       5
+14     install nodejs           2026-02-22       Install     3
+
+nodejs-18.19.0-1.el9.x86_64
+nodejs-docs-18.19.0-1.el9.noarch
+
+===== Lab 14 Completed =====
