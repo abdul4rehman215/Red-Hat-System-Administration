@@ -1,0 +1,164 @@
+============================================================
+Lab 05 – Job Control
+Linux Signals & Process Management Reference
+Environment: CentOS 7
+Shell: Bash 4.2
+============================================================
+
+------------------------------------------------------------
+1) Understanding Jobs vs Processes
+------------------------------------------------------------
+
+Job:
+- Managed by the current shell session
+- Identified by job number (e.g., %1)
+- Viewed using: jobs
+
+Process:
+- Managed by the Linux kernel
+- Identified by PID (Process ID)
+- Viewed using: ps, top, htop
+
+
+------------------------------------------------------------
+2) Background Execution
+------------------------------------------------------------
+
+Start process in background:
+sleep 300 &
+
+Output:
+[1] 18472
+
+[1]  -> Job number
+18472 -> Process ID (PID)
+
+
+------------------------------------------------------------
+3) Job Control Commands
+------------------------------------------------------------
+
+List background jobs:
+jobs
+
+List jobs with PID:
+jobs -l
+
+Bring job to foreground:
+fg %1
+
+Resume suspended job in background:
+bg %1
+
+Suspend foreground job:
+Ctrl + Z
+
+
+------------------------------------------------------------
+4) Linux Signals Overview
+------------------------------------------------------------
+
+View all signals:
+kill -l
+
+Common Signals:
+
+1   SIGHUP    → Terminal closed
+2   SIGINT    → Interrupt (Ctrl+C)
+3   SIGQUIT   → Quit
+9   SIGKILL   → Force kill (cannot be caught)
+15  SIGTERM   → Graceful termination (default)
+18  SIGCONT   → Continue stopped process
+19  SIGSTOP   → Stop process (cannot be caught)
+
+
+------------------------------------------------------------
+5) Sending Signals
+------------------------------------------------------------
+
+Graceful termination:
+kill PID
+kill -15 PID
+
+Force termination:
+kill -9 PID
+
+Kill by job number:
+kill %1
+
+
+------------------------------------------------------------
+6) Process Inspection Tools
+------------------------------------------------------------
+
+View running processes:
+ps aux
+
+Interactive process monitor:
+top
+
+Kill process from command line:
+kill PID
+
+Kill process by name:
+pkill process_name
+
+
+------------------------------------------------------------
+7) Job Control with Containers (Podman)
+------------------------------------------------------------
+
+Run container in detached mode:
+podman run -d --name lab_nginx nginx
+
+List running containers:
+podman ps
+
+Stop container:
+podman stop lab_nginx
+
+Force remove container:
+podman rm -f lab_nginx
+
+
+------------------------------------------------------------
+8) Advanced Job Management Concepts
+------------------------------------------------------------
+
+Persistent background process:
+nohup sleep 600 &
+
+Output redirected to:
+nohup.out
+
+Disown job (remove from shell control):
+disown %1
+
+Check parent process ID:
+ps -o ppid= -p PID
+
+Foreground vs Background:
+
+Foreground:
+- Attached to terminal
+- Receives keyboard input
+
+Background:
+- Detached from terminal input
+- Still bound to session unless disowned
+
+
+------------------------------------------------------------
+9) Real-World Use Cases
+------------------------------------------------------------
+
+• Running long database backups
+• Monitoring logs in background
+• Container lifecycle management
+• Incident response (killing malicious processes)
+• DevOps CI/CD long-running tasks
+
+
+============================================================
+End of Signal Reference
+============================================================
