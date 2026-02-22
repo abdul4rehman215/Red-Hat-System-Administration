@@ -1,0 +1,94 @@
+===== TASK 1: Inspect Block Devices =====
+
+$ lsblk
+NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+nvme0n1     259:0    0   32G  0 disk
+└─nvme0n1p1 259:1    0   32G  0 part /
+nvme1n1     259:2    0   40G  0 disk
+
+$ lsblk -f
+NAME        FSTYPE FSVER LABEL UUID                                 MOUNTPOINT
+nvme0n1
+└─nvme0n1p1 ext4   1.0         2f4a8e11-3b9d-4a5c-9a11-abcdef123456 /
+nvme1n1
+
+$ sudo blkid
+/dev/nvme0n1p1: UUID="2f4a8e11-3b9d-4a5c-9a11-abcdef123456" TYPE="ext4"
+
+===== TASK 2: Create Partition =====
+
+Partition created successfully:
+Device            Start      End  Sectors Size Type
+/dev/nvme1n1p1     2048 83886079 83884032  40G Linux
+
+===== TASK 3: Format Filesystem =====
+
+$ sudo mkfs.ext4 /dev/nvme1n1p1
+Creating filesystem with 10485760 4k blocks...
+Filesystem UUID: 5e7b1c22-9a33-4fbc-bc99-123456abcdef
+
+===== TASK 4: Temporary Mount =====
+
+$ sudo mount /dev/nvme1n1p1 /mnt/mydisk
+
+$ df -h | grep mydisk
+/dev/nvme1n1p1   40G   24M   38G   1% /mnt/mydisk
+
+$ sudo umount /mnt/mydisk
+
+===== TASK 5: Persistent Mount =====
+
+$ sudo mount -a
+(no errors)
+
+$ df -h | grep mydisk
+/dev/nvme1n1p1   40G   24M   38G   1% /mnt/mydisk
+
+===== TASK 6: LVM Creation =====
+
+$ sudo pvcreate /dev/nvme1n1
+Physical volume "/dev/nvme1n1" successfully created.
+
+$ sudo vgcreate myvg /dev/nvme1n1
+Volume group "myvg" successfully created
+
+$ sudo lvcreate -L 5G -n mylv myvg
+Logical volume "mylv" created.
+
+$ sudo mkfs.ext4 /dev/myvg/mylv
+
+$ sudo mount /dev/myvg/mylv /mnt/lvm
+
+$ df -h | grep lvm
+/dev/mapper/myvg-mylv   5.0G   24M  4.8G   1% /mnt/lvm
+
+===== TASK 7: Extend LVM =====
+
+$ sudo lvextend -L +2G /dev/myvg/mylv
+Size of logical volume myvg/mylv changed from 5.00 GiB to 7.00 GiB.
+
+$ sudo resize2fs /dev/myvg/mylv
+Resizing the filesystem...
+The filesystem is now 1835008 (4k) blocks long.
+
+$ df -h | grep lvm
+/dev/mapper/myvg-mylv   7.0G   28M  6.8G   1% /mnt/lvm
+
+===== TASK 8: LVM Status =====
+
+$ sudo pvdisplay
+PV Name               /dev/nvme1n1
+VG Name               myvg
+PV Size               40.00 GiB
+
+$ sudo vgdisplay
+VG Name               myvg
+VG Size               40.00 GiB
+Free  PE / Size       33.00 GiB
+
+$ sudo lvdisplay
+LV Name               mylv
+VG Name               myvg
+LV Size               7.00 GiB
+
+===== Lab 15 Completed =====
