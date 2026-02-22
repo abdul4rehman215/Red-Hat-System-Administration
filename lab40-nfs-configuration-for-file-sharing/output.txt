@@ -1,0 +1,8 @@
+NFS server and services active (running)
+
+exporting 192.168.1.101:/mnt/nfs_share
+
+192.168.1.100:/mnt/nfs_share nfs 32G 1.5G 30G 5% /mnt/nfs_mount
+
+File test successful:
+NFS test file
