@@ -1,0 +1,117 @@
+==============================
+Task 1: Exploring /var/log
+==============================
+
+$ ls -l /var/log
+total 512
+-rw-------. 1 root root    24832 Feb 22 14:40 boot.log
+-rw-r--r--. 1 root root    52341 Feb 22 14:55 cron
+-rw-r--r--. 1 root root    91284 Feb 22 15:02 dnf.log
+-rw-r--r--. 1 root root   182345 Feb 22 15:10 messages
+-rw-------. 1 root root    43122 Feb 22 15:10 secure
+drwxr-xr-x. 2 root root     4096 Feb 22 14:30 journal
+
+
+$ sudo cat /var/log/messages | tail
+Feb 22 15:07:10 localhost systemd[1]: Started OpenSSH server daemon.
+Feb 22 15:08:02 localhost NetworkManager[721]: <info> device (eth0): state change: activated
+Feb 22 15:09:41 localhost kernel: audit: type=1400 audit(1677084581.123:45)
+
+
+$ sudo cat /var/log/secure | tail
+Feb 22 15:05:11 localhost sshd[1450]: Accepted password for student from 10.0.2.15 port 53210 ssh2
+Feb 22 15:06:45 localhost sshd[1482]: Failed password for invalid user admin from 192.168.1.50 port 49821 ssh2
+Feb 22 15:06:48 localhost sshd[1482]: Connection closed by invalid user admin 192.168.1.50 port 49821
+
+
+==============================
+Task 2: journalctl Usage
+==============================
+
+$ sudo journalctl | head
+Feb 22 14:30:01 localhost kernel: Linux version 5.14.0-362.el9.x86_64
+Feb 22 14:30:02 localhost systemd[1]: Started Journal Service.
+Feb 22 14:30:03 localhost systemd[1]: Reached target Multi-User System.
+
+
+$ sudo journalctl --since "1 hour ago"
+Feb 22 14:45:10 localhost sshd[1450]: Accepted password for student
+Feb 22 15:01:22 localhost sudo[1622]: student : TTY=pts/0 ; COMMAND=/usr/bin/dnf update
+
+
+$ sudo journalctl -u sshd | tail
+Feb 22 15:05:11 localhost sshd[1450]: Accepted password for student
+Feb 22 15:06:45 localhost sshd[1482]: Failed password for invalid user admin
+
+
+$ sudo journalctl -f
+Feb 22 15:12:11 localhost sshd[1550]: Accepted publickey for student
+^C
+
+
+==============================
+Task 3: logrotate
+==============================
+
+$ ls /etc/logrotate.d/
+bootlog
+dnf
+firewalld
+sshd
+
+
+$ cat /etc/logrotate.conf
+weekly
+rotate 4
+create
+dateext
+include /etc/logrotate.d
+
+
+$ sudo logrotate -d /etc/logrotate.d/mylogs
+reading config file /etc/logrotate.d/mylogs
+rotating pattern: /var/log/mylog.log  after 1 days (7 rotations)
+empty log files are not rotated, old logs are removed
+
+
+==============================
+Task 4: grep and awk
+==============================
+
+$ sudo grep "error" /var/log/messages
+Feb 22 14:55:02 localhost kernel: usb 1-1: device descriptor read/64, error -71
+
+
+$ sudo grep -i "fail" /var/log/secure
+Feb 22 15:06:45 localhost sshd[1482]: Failed password for invalid user admin
+
+
+$ sudo grep -c "Failed password" /var/log/secure
+3
+
+
+$ sudo awk '/Failed password/ {print $1, $2, $3, $11}' /var/log/secure
+Feb 22 15:06:45 192.168.1.50
+Feb 22 15:07:02 192.168.1.51
+Feb 22 15:08:10 192.168.1.52
+
+
+==============================
+Container Logs (Podman)
+==============================
+
+$ podman ps
+CONTAINER ID  IMAGE         COMMAND     STATUS
+a1b2c3d4e5f6  nginx:latest  nginx -g    Up 5 minutes
+
+
+$ podman logs a1b2c3d4e5f6 | grep -i error
+2026/02/22 15:10:22 [error] 1#1: open() "/usr/share/nginx/html/favicon.ico" failed
+
+
+==============================
+Verification
+==============================
+
+$ sudo journalctl --disk-usage
+Archived and active journals take up 128.0M in the file system.
