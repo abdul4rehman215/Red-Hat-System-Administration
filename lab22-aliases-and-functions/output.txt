@@ -151,5 +151,5 @@ Cleanup – Remove Temporary Aliases
 
 
 ============================================================
-End of Lab 02 Execution Log
+End of Lab 22 Execution Log
 ============================================================
