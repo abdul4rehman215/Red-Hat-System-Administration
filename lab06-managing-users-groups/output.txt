@@ -1,0 +1,140 @@
+========================================
+Lab 06 - Managing Users and Groups
+Execution Output Log
+========================================
+
+
+--------------------------------------------------
+Lab Setup
+--------------------------------------------------
+
+-bash-4.2$ pwd
+/home/student
+
+-bash-4.2$ sudo -v
+[sudo] password for student:
+(Password entered successfully — sudo session validated.)
+
+-bash-4.2$ sudo dnf install -y shadow-utils
+Last metadata expiration check: 0:05:11 ago on Thu 22 Feb 2026 12:45:10 PM UTC.
+Package shadow-utils-2:4.9-10.el9.x86_64 is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+
+
+--------------------------------------------------
+Task 1: User Management
+--------------------------------------------------
+
+-bash-4.2$ sudo useradd -m -s /bin/bash labuser1
+(No output indicates success.)
+
+-bash-4.2$ sudo passwd labuser1
+Changing password for user labuser1.
+New password:
+Retype new password:
+passwd: all authentication tokens updated successfully.
+
+-bash-4.2$ id labuser1
+uid=1002(labuser1) gid=1002(labuser1) groups=1002(labuser1)
+
+
+--------------------------------------------------
+Modify User
+--------------------------------------------------
+
+-bash-4.2$ sudo usermod -s /bin/zsh labuser1
+
+-bash-4.2$ sudo usermod -c "Lab User 1" labuser1
+
+-bash-4.2$ grep labuser1 /etc/passwd
+labuser1:x:1002:1002:Lab User 1:/home/labuser1:/bin/zsh
+
+
+--------------------------------------------------
+Task 2: Group Management
+--------------------------------------------------
+
+-bash-4.2$ sudo groupadd labgroup
+
+-bash-4.2$ sudo usermod -aG labgroup labuser1
+
+-bash-4.2$ groups labuser1
+labuser1 : labuser1 labgroup
+
+
+--------------------------------------------------
+Group Administrator
+--------------------------------------------------
+
+-bash-4.2$ sudo gpasswd -A labuser1 labgroup
+
+-bash-4.2$ sudo useradd -m labuser2
+
+-bash-4.2$ sudo passwd labuser2
+Changing password for user labuser2.
+New password:
+Retype new password:
+passwd: all authentication tokens updated successfully.
+
+-bash-4.2$ sudo gpasswd -a labuser2 labgroup
+Adding user labuser2 to group labgroup
+
+-bash-4.2$ getent group labgroup
+labgroup:x:1003:labuser1,labuser2
+
+
+--------------------------------------------------
+Task 3: Password Policies
+--------------------------------------------------
+
+-bash-4.2$ sudo chage -M 90 -m 7 -W 14 labuser1
+
+-bash-4.2$ sudo chage -l labuser1
+Last password change                                    : Feb 22, 2026
+Password expires                                        : May 23, 2026
+Password inactive                                       : never
+Account expires                                         : never
+Minimum number of days between password change          : 7
+Maximum number of days between password change          : 90
+Number of days of warning before password expires       : 14
+
+
+--------------------------------------------------
+Task 4: Cleanup
+--------------------------------------------------
+
+-bash-4.2$ sudo userdel labuser1
+
+-bash-4.2$ sudo userdel -r labuser2
+userdel: labuser2 mail spool (/var/mail/labuser2) not found
+
+-bash-4.2$ id labuser1
+id: ‘labuser1’: no such user
+
+-bash-4.2$ id labuser2
+id: ‘labuser2’: no such user
+
+-bash-4.2$ sudo groupdel labgroup
+
+-bash-4.2$ cut -d: -f1 /etc/passwd | tail
+student
+chrony
+sshd
+podman
+
+-bash-4.2$ getent group labgroup
+(no output)
+
+
+--------------------------------------------------
+Verification Summary
+--------------------------------------------------
+
+✔ Users created and modified successfully
+✔ Group created and managed
+✔ Password aging policy configured
+✔ Users removed
+✔ Group removed
+✔ No residual lab users present
