@@ -1,0 +1,141 @@
+========================================
+Lab 08 - Monitoring and Managing Processes
+Execution Output Log
+========================================
+
+
+--------------------------------------------------
+Task 1: Viewing Processes
+--------------------------------------------------
+
+-bash-4.2$ pwd
+/home/student
+
+
+-bash-4.2$ ps aux | head
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.3 171224  14200 ?        Ss   12:40   0:01 /usr/lib/systemd/systemd
+root       624  0.0  0.1  12312   6528 ?        Ss   12:40   0:00 /usr/lib/systemd/systemd-journald
+root       712  0.0  0.2  29104  10240 ?        Ss   12:40   0:00 /usr/sbin/sshd -D
+student   1056  0.0  0.2  18944   9144 pts/0    Ss   13:25   0:00 -bash
+student   1098  0.0  0.1  20312   8020 pts/0    R+   13:26   0:00 ps aux
+
+
+-bash-4.2$ ps aux | grep sshd
+root       712  0.0  0.2  29104 10240 ?        Ss   12:40   0:00 /usr/sbin/sshd -D
+student   1110  0.0  0.1  20312  7924 pts/0    S+   13:27   0:00 grep --color=auto sshd
+
+
+-bash-4.2$ top
+top - 13:28:42 up 45 min,  1 user,  load average: 0.00, 0.01, 0.05
+Tasks: 116 total,   1 running, 115 sleeping
+%Cpu(s):  1.2 us,  0.5 sy,  0.0 ni, 98.1 id
+MiB Mem :  3850.0 total,  2980.2 free,   420.5 used,   449.3 buff/cache
+
+  PID USER      PR  NI    VIRT    RES  %CPU %MEM COMMAND
+ 1056 student   20   0   18944   9144   0.3  0.2 bash
+  712 root      20   0   29104  10240   0.0  0.2 sshd
+
+(Pressed Shift + M to sort by memory)
+(Pressed q to exit)
+
+
+-bash-4.2$ sudo dnf install htop -y
+Package htop-3.2.2-1.el9.x86_64 is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+
+
+-bash-4.2$ htop
+  1  [|||||||||                     12.5%]
+Mem[||||||||||||||||                35.2%]
+Swap[                               0.0%]
+
+  PID USER      PRI  NI  VIRT   RES   CPU% MEM%  Command
+ 1056 student   20    0 18944   9144   0.0  0.2  bash
+  712 root      20    0 29104  10240   0.0  0.2  sshd
+
+(Used arrow keys)
+(Pressed F6 to sort)
+(Pressed F10 to exit)
+
+
+--------------------------------------------------
+Task 2: Sending Signals
+--------------------------------------------------
+
+-bash-4.2$ sleep 300 &
+[1] 1250
+
+-bash-4.2$ pidof sleep
+1250
+
+-bash-4.2$ kill 1250
+[1]+  Terminated              sleep 300
+
+
+-bash-4.2$ sleep 300 &
+[1] 1284
+
+-bash-4.2$ kill -9 1284
+[1]+  Killed                  sleep 300
+
+
+-bash-4.2$ sleep 300 &
+[1] 1310
+
+-bash-4.2$ pkill sleep
+[1]+  Terminated              sleep 300
+
+
+--------------------------------------------------
+Task 3: Job Control
+--------------------------------------------------
+
+-bash-4.2$ sleep 300 &
+[1] 1334
+
+-bash-4.2$ jobs
+[1]+  Running                 sleep 300 &
+
+-bash-4.2$ fg %1
+sleep 300
+(Pressed Ctrl + Z)
+[1]+  Stopped                 sleep 300
+
+-bash-4.2$ bg %1
+[1]+ sleep 300 &
+
+
+--------------------------------------------------
+Task 4: Adjusting Process Priority
+--------------------------------------------------
+
+-bash-4.2$ nice -n 10 sleep 300 &
+[2] 1378
+
+-bash-4.2$ ps -o pid,ni,cmd -p 1378
+  PID  NI CMD
+ 1378  10 sleep 300
+
+-bash-4.2$ pgrep sleep
+1378
+
+-bash-4.2$ sudo renice -n 15 -p 1378
+1378 (process ID) old priority 10, new priority 15
+
+-bash-4.2$ ps -o pid,ni,cmd -p 1378
+  PID  NI CMD
+ 1378  15 sleep 300
+
+
+--------------------------------------------------
+Verification Summary
+--------------------------------------------------
+
+✔ Processes listed using ps
+✔ Real-time monitoring using top and htop
+✔ Processes terminated using kill and pkill
+✔ Background and foreground job control practiced
+✔ Process priority adjusted using nice and renice
