@@ -1,0 +1,6 @@
+[Unit]
+Description=System Maintenance Task
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c '/usr/bin/echo "Performing system maintenance at $(date)" >> /var/log/maintenance.log'
