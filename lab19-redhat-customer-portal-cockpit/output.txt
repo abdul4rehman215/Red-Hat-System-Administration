@@ -1,0 +1,47 @@
+NAME="Red Hat Enterprise Linux"
+VERSION="9.3 (Plow)"
+ID="rhel"
+VERSION_ID="9.3"
+PRETTY_NAME="Red Hat Enterprise Linux 9.3 (Plow)"
+
+mylabhost
+
+lo               UNKNOWN        127.0.0.1/8 ::1/128
+ens5             UP             10.0.2.15/24 fe80::a00:27ff:fe12:3456/64
+
+Installing:
+ cockpit               x86_64    300.1-1.el9
+ cockpit-podman        noarch    82-1.el9
+Installing dependencies:
+ cockpit-bridge        x86_64    300.1-1.el9
+ cockpit-system        noarch    300.1-1.el9
+ cockpit-ws            x86_64    300.1-1.el9
+
+Transaction Summary
+Install  5 Packages
+Complete!
+
+Created symlink /etc/systemd/system/sockets.target.wants/cockpit.socket → /usr/lib/systemd/system/cockpit.socket.
+
+● cockpit.socket - Cockpit Web Service Socket
+     Loaded: loaded (/usr/lib/systemd/system/cockpit.socket; enabled)
+     Active: active (listening) since Thu 2026-02-22 18:25:11 UTC
+   Triggers: ● cockpit.service
+     Listen: /run/cockpit/ws (Stream)
+             9090 (Stream)
+
+success
+success
+
+LISTEN 0      4096         0.0.0.0:9090      0.0.0.0:*    users:(("systemd",pid=1,fd=84))
+LISTEN 0      4096            [::]:9090         [::]:*    users:(("systemd",pid=1,fd=86))
+
+Feb 22 18:25:11 mylabhost systemd[1]: Started cockpit.service - Cockpit Web Service.
+Feb 22 18:25:12 mylabhost cockpit-ws[3120]: cockpit-ws: started on https://0.0.0.0:9090
+Feb 22 18:26:04 mylabhost cockpit-ws[3120]: authentication success for centos
+
+enabled
+active
+
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
