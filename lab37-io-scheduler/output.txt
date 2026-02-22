@@ -1,0 +1,13 @@
+Disk: sda, Scheduler: [mq-deadline] kyber bfq none
+
+Switching to bfq...
+mq-deadline kyber [bfq] none
+
+Sequential Read:
+1073741824 bytes copied, 1.92 s, 559 MB/s
+
+Random Write (fio):
+IOPS=820, BW=3280KiB/s
+
+Sequential Read (fio):
+IOPS=540, BW=540MiB/s
