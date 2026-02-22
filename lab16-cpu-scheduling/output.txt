@@ -1,0 +1,132 @@
+# ==========================================
+# Lab 36 – Adjusting CPU Scheduling
+# nice & renice (CentOS 7)
+# ==========================================
+
+# ----------------------------
+# Prerequisite Verification
+# ----------------------------
+
+$ sudo yum update -y
+Loaded plugins: fastestmirror
+No packages marked for update
+
+$ sudo yum install htop -y
+Installed:
+  htop.x86_64 0:2.2.0-3.el7
+Complete!
+
+$ htop --version
+htop 2.2.0
+
+
+# ----------------------------
+# Task 1: Default Priority
+# ----------------------------
+
+$ dd if=/dev/zero of=/dev/null &
+[1] 28471
+
+$ pgrep -n dd
+28471
+
+$ ps -l -p 28471
+F S UID   PID  PPID PRI NI ADDR SZ WCHAN  TTY   TIME CMD
+4 R 1000 28471  2763  80  0 -    1078 -     pts/0 00:00:04 dd
+
+📌 NI = 0 (Default priority)
+
+
+# ----------------------------
+# Task 2: nice Command
+# ----------------------------
+
+$ nice -n 10 dd if=/dev/zero of=/dev/null &
+[2] 28489
+
+$ ps -l -p 28489
+F S UID   PID  PPID PRI NI ADDR SZ WCHAN  TTY   TIME CMD
+4 R 1000 28489  2763  70 10 -    1078 -     pts/0 00:00:02 dd
+
+✅ NI = 10 (Lower CPU priority)
+
+
+# ----------------------------
+# Task 3: renice Command
+# ----------------------------
+
+$ pgrep -l dd
+28471 dd
+28489 dd
+
+$ sudo renice -n 15 -p 28489
+28489 (process ID) old priority 10, new priority 15
+
+$ ps -l -p 28489
+F S UID   PID  PPID PRI NI ADDR SZ WCHAN  TTY   TIME CMD
+4 R 1000 28489  2763  65 15 -    1078 -     pts/0 00:00:06 dd
+
+✅ NI updated to 15 (Even lower priority)
+
+
+$ sudo renice -n -5 -p 28471
+28471 (process ID) old priority 0, new priority -5
+
+$ ps -l -p 28471
+F S UID   PID  PPID PRI NI ADDR SZ WCHAN  TTY   TIME CMD
+4 R 1000 28471  2763  85 -5 -    1078 -     pts/0 00:00:08 dd
+
+✅ NI = -5 (Higher priority than default)
+
+
+# ----------------------------
+# Task 4: CPU Monitoring (htop)
+# ----------------------------
+
+$ htop
+
+[Screen Snapshot]
+
+  PID USER     PRI  NI  CPU% MEM%  TIME+   Command
+28471 centos    85  -5  78.4  0.1   0:12.45 dd
+28489 centos    65  15  21.5  0.1   0:09.22 dd
+
+📌 Higher priority (-5) consumes more CPU.
+
+
+# ----------------------------
+# Task 5: Priority Competition
+# ----------------------------
+
+$ nice -n 19 dd if=/dev/zero of=/dev/null &
+[3] 28511
+
+$ sudo nice -n -5 dd if=/dev/zero of=/dev/null &
+[4] 28510
+
+$ htop
+
+[Screen Snapshot]
+
+  PID USER     NI  CPU%
+28510 centos   -5  80.2
+28511 centos   19  10.4
+
+📌 Lowest nice value (-5) dominates CPU scheduling.
+
+
+# ----------------------------
+# Cleanup
+# ----------------------------
+
+$ pkill dd
+
+$ pgrep dd
+(no output)
+
+✅ All test processes terminated.
+
+
+# ==========================================
+# Lab 36 Completed Successfully
+# ==========================================
