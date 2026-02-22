@@ -1,4 +1,4 @@
-# 🎤 Interview Questions – Lab 37: I/O Scheduler
+# 🎤 Interview Questions – Lab 37: Configuring I/O Scheduler
 
 ---
 
