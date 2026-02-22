@@ -1,5 +1,5 @@
 ============================================================
-Lab 01 – Advanced Bash History and Search
+Lab 21 – Advanced Bash History and Search
 Execution Output Log
 Environment: Ubuntu 24.04.1 LTS
 User: toor
@@ -159,5 +159,5 @@ toor@ip-172-31-10-184:~$ hst
 
 
 ============================================================
-End of Lab 01 Execution Log
+End of Lab 21 Execution Log
 ============================================================
