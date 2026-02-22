@@ -1,0 +1,76 @@
+============================================================
+Lab 23 – Command Substitution
+Practice Commands Reference (Key Examples)
+Environment: Ubuntu 24.04.1 LTS
+User: toor
+============================================================
+
+------------------------------------------------------------
+1) Basic $() Command Substitution
+------------------------------------------------------------
+
+echo "Today is $(date)"
+
+echo "There are $(ls | wc -l) files in this directory"
+
+
+------------------------------------------------------------
+2) Backtick Syntax (Legacy)
+------------------------------------------------------------
+
+echo "Today is `date`"
+
+
+------------------------------------------------------------
+3) Nested Substitution Comparison
+------------------------------------------------------------
+
+# Modern nesting (clean)
+echo "Test 1: $(echo $(date))"
+
+# Backtick nesting (requires escaping)
+echo "Test 2: `echo \`date\``"
+
+
+------------------------------------------------------------
+4) Dynamic File Operations
+------------------------------------------------------------
+
+# Read all .txt files found dynamically
+cat $(find . -name "*.txt")
+
+# Count lines of all .log files found dynamically
+wc -l $(find . -name "*.log")
+
+
+------------------------------------------------------------
+5) Dynamic Backup Naming
+------------------------------------------------------------
+
+tar czf config_backup_$(date +%Y%m%d).tar.gz $(find . -name "*.ini")
+
+
+------------------------------------------------------------
+6) Pipelines Inside Substitution
+------------------------------------------------------------
+
+echo "There are $(ps aux | wc -l) processes running"
+
+
+------------------------------------------------------------
+7) Nested Substitution for Latest File Timestamp
+------------------------------------------------------------
+
+echo "Newest file was modified at $(date -r $(ls -t | head -n 1))"
+
+
+------------------------------------------------------------
+8) Complex Pipeline Example for Largest File
+------------------------------------------------------------
+
+echo "The largest file is $(du -h $(find . -type f) | sort -h | tail -n 1)"
+
+
+============================================================
+End of Practice Commands Reference
+============================================================
