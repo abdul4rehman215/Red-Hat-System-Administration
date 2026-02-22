@@ -1,4 +1,4 @@
-# 🎤 Interview Questions – Lab 19: Managing Logical Volumes with LVM
+# 🎤 Interview Q&A – Lab 19: Managing Logical Volumes with LVM
 
 ---
 
