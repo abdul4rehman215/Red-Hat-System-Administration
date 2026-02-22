@@ -1,0 +1,87 @@
+# ===============================
+# Lab 31 – logrotate Output
+# ===============================
+
+$ sudo yum install logrotate -y
+Loaded plugins: fastestmirror
+Package logrotate-3.8.6-19.el7.x86_64 already installed and latest version
+Nothing to do
+
+
+$ logrotate --version
+logrotate 3.8.6
+
+    Default mail command:       /bin/mail
+    Default compress command:   /bin/gzip
+    Default uncompress command: /bin/gunzip
+
+
+$ sudo cat /etc/logrotate.conf
+weekly
+rotate 4
+create
+dateext
+include /etc/logrotate.d
+
+
+$ ls /etc/logrotate.d/
+bootlog  chrony  syslog  yum
+
+
+$ sudo logrotate --debug /etc/logrotate.d/mycustomlogs
+reading config file /etc/logrotate.d/mycustomlogs
+handling 1 logs
+
+rotating pattern: /var/log/messages  after 1 days (7 rotations)
+empty log files are not rotated, old logs are removed
+✅ No syntax errors detected.
+
+
+$ sudo logrotate --debug --verbose --force /etc/logrotate.d/mycustomlogs
+rotating log /var/log/messages, log->rotateCount is 7
+renaming /var/log/messages to /var/log/messages.1
+
+
+$ sudo logrotate --force /etc/logrotate.d/mycustomlogs
+(No errors displayed.)
+
+
+$ ls -lh /var/log/messages*
+-rw-r----- 1 root root  12K Feb 22 14:10 /var/log/messages
+-rw-r----- 1 root root  45K Feb 22 13:59 /var/log/messages.1.gz
+
+
+$ for i in {1..1000}; do echo "Test log entry $i" | sudo tee -a /var/log/messages > /dev/null; done
+(No output)
+
+
+$ sudo du -sh /var/log/messages
+180K    /var/log/messages
+
+
+$ sudo logrotate --force /etc/logrotate.d/mycustomlogs
+(No output)
+
+
+$ ls -lh /var/log/messages*
+-rw-r----- 1 root root  1.2K Feb 22 14:18 /var/log/messages
+-rw-r----- 1 root root 180K Feb 22 14:17 /var/log/messages.1.gz
+-rw-r----- 1 root root  45K Feb 22 13:59 /var/log/messages.2.gz
+
+
+$ file /var/log/messages.1.gz
+/var/log/messages.1.gz: gzip compressed data, from Unix
+
+
+$ ls /etc/cron.daily/logrotate
+/etc/cron.daily/logrotate
+
+
+$ df -h /var
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/xvda1       20G  3.2G   17G  16% /
+
+
+# (Optional Verification) logrotate status tracking
+# File: /var/lib/logrotate/logrotate.status
+# Contents vary by system state and rotation history
