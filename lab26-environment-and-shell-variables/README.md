@@ -35,7 +35,7 @@ This lab builds foundational skills for automation, DevOps, scripting, and syste
 ## 🗂 Repository Structure
 
 ```
-Lab26-environment-and-shell-variables/
+lab26-environment-and-shell-variables/
 │
 ├── README.md
 ├── commands.sh
