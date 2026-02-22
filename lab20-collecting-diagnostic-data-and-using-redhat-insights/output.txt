@@ -1,0 +1,55 @@
+Installing:
+ sos          noarch    4.6.1-1.el9          rhel-9-baseos         2.3 M
+
+Transaction Summary
+Install  1 Package
+Complete!
+
+Removed metadata cache.
+Metadata cache created.
+
+sosreport (version 4.6.1)
+
+Setting up archive ...
+Running plugins. Please wait ...
+
+  Running plugin: networking
+  Running plugin: rpm
+  Running plugin: systemd
+  Running plugin: storage
+  Running plugin: logs
+  Running plugin: podman
+  Running plugin: subscription_manager
+
+Creating compressed archive...
+
+Your sosreport has been generated and saved in:
+  /var/tmp/sosreport-mylabhost-2026-02-22-hfskd93.tar.xz
+
+Size: 18.5MiB
+
+-rw------- 1 root root 19M Feb 22 19:42 /var/tmp/sosreport-mylabhost-2026-02-22-hfskd93.tar.xz
+
+Installing:
+ insights-client      noarch    3.1.4-1.el9         rhel-9-baseos       1.2 M
+
+Transaction Summary
+Install  1 Package
+Complete!
+
+Successfully registered host to Red Hat Insights
+
+Overall Status: Current
+System Purpose Status: Matched
+
+HTTP/2 200
+server: rh-edge
+
+Starting to collect Insights data for mylabhost
+Uploading Insights data.
+Successfully uploaded report for mylabhost.
+View the Red Hat Insights console at https://cloud.redhat.com/insights
+
+0 0 * * * root /usr/bin/insights-client
+
+Successfully connected to Red Hat Insights
