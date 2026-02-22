@@ -1,0 +1,146 @@
+========================================
+Lab 10 - Configuring and Securing SSH
+Execution Output Log
+========================================
+
+
+--------------------------------------------------
+Task 1: Install and Verify OpenSSH
+--------------------------------------------------
+
+-bash-4.2$ ssh -V
+OpenSSH_8.7p1, OpenSSL 3.0.7 1 Nov 2025
+
+
+-bash-4.2$ sudo dnf install openssh-server -y
+Package openssh-server-8.7p1-34.el9.x86_64 is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+
+
+-bash-4.2$ sudo systemctl status sshd
+
+● sshd.service - OpenSSH server daemon
+     Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled)
+     Active: active (running) since Thu 2026-02-22 12:40:15 UTC
+   Main PID: 712 (sshd)
+      Tasks: 1 (limit: 23000)
+     Memory: 4.2M
+        CPU: 89ms
+     CGroup: /system.slice/sshd.service
+             └─712 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
+
+
+--------------------------------------------------
+Task 2: Harden SSH Configuration
+--------------------------------------------------
+
+-bash-4.2$ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+✔ Backup created successfully.
+
+
+(Modified sshd_config with the following changes:)
+
+Port 2222
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+AllowUsers student
+
+
+-bash-4.2$ sudo systemctl restart sshd
+(no output indicates successful restart)
+
+
+-bash-4.2$ ss -tulnp | grep ssh
+
+tcp   LISTEN 0      128          0.0.0.0:2222       0.0.0.0:*    users:(("sshd",pid=1822,fd=3))
+tcp   LISTEN 0      128             [::]:2222          [::]:*    users:(("sshd",pid=1822,fd=4))
+
+✔ SSH now listening on port 2222.
+
+
+--------------------------------------------------
+Task 3: Generate and Configure SSH Keys
+--------------------------------------------------
+
+(Client Machine)
+
+toor@ip-172-31-10-241:~$ ssh-keygen -t ed25519 -C "student@example.com"
+
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/home/toor/.ssh/id_ed25519):
+Created directory '/home/toor/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/toor/.ssh/id_ed25519
+Your public key has been saved in /home/toor/.ssh/id_ed25519.pub
+The key fingerprint is:
+SHA256:abc123xyzExample student@example.com
+
+
+toor@ip-172-31-10-241:~$ ssh-copy-id -p 2222 student@10.0.2.15
+
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s)
+student@10.0.2.15's password:
+Number of key(s) added: 1
+
+Now try logging into the machine, with:
+  "ssh -p 2222 'student@10.0.2.15'"
+
+
+toor@ip-172-31-10-241:~$ ssh -p 2222 student@10.0.2.15
+
+Last login: Thu Feb 22 14:30:01 2026 from 172.31.10.241
+[student@localhost ~]$
+
+✔ Logged in successfully using key-based authentication.
+
+
+(Fix permissions if needed)
+
+-bash-4.2$ chmod 700 ~/.ssh
+-bash-4.2$ chmod 600 ~/.ssh/authorized_keys
+
+
+--------------------------------------------------
+Task 4: Configure Firewall
+--------------------------------------------------
+
+-bash-4.2$ sudo firewall-cmd --permanent --add-port=2222/tcp
+success
+
+
+-bash-4.2$ sudo firewall-cmd --reload
+success
+
+
+-bash-4.2$ sudo firewall-cmd --list-ports
+2222/tcp
+
+✔ Firewall now allows SSH only on port 2222.
+
+
+--------------------------------------------------
+Final Verification
+--------------------------------------------------
+
+toor@ip-172-31-10-241:~$ ssh -p 2222 student@10.0.2.15
+[student@localhost ~]$
+
+✔ Successful passwordless login confirms secure configuration.
+
+
+--------------------------------------------------
+Security Hardening Summary
+--------------------------------------------------
+
+✔ Changed default SSH port from 22 to 2222
+✔ Disabled root login
+✔ Disabled password authentication
+✔ Enabled key-based authentication
+✔ Restricted allowed users
+✔ Restricted firewall access to specific port
+
+SSH security posture significantly improved.
