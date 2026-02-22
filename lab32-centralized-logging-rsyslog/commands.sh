@@ -1,5 +1,5 @@
 # ==========================================
-# Lab 12 – Using rsyslog for Centralized Logging
+# Lab 32 – Using rsyslog for Centralized Logging
 # Server: 192.168.1.100 (logserver.example.com)
 # Client: 192.168.1.101 (client.example.com)
 # OS: CentOS 7 (Core)
