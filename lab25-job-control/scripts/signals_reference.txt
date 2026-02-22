@@ -1,5 +1,5 @@
 ============================================================
-Lab 05 – Job Control
+Lab 25 – Job Control
 Linux Signals & Process Management Reference
 Environment: CentOS 7
 Shell: Bash 4.2
