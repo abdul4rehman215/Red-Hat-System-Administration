@@ -1,0 +1,157 @@
+# ==========================================
+# Lab 33 – Archiving Files with tar
+# ==========================================
+
+
+# ----------------------------
+# Task 1: Create Sample Files
+# ----------------------------
+
+$ mkdir lab_files
+$ cd lab_files
+$ touch file1.txt file2.txt file3.txt
+$ echo "This is file1" > file1.txt
+$ echo "This is file2" > file2.txt
+$ echo "This is file3" > file3.txt
+
+$ ls -l
+-rw-r--r-- 1 toor toor 14 Feb 22 16:10 file1.txt
+-rw-r--r-- 1 toor toor 14 Feb 22 16:10 file2.txt
+-rw-r--r-- 1 toor toor 14 Feb 22 16:10 file3.txt
+
+✅ Three sample files created successfully.
+
+
+# ----------------------------
+# Task 2: Create .tar Archive
+# ----------------------------
+
+$ tar -cvf archive.tar file1.txt file2.txt file3.txt
+file1.txt
+file2.txt
+file3.txt
+
+$ ls -l
+-rw-r--r-- 1 toor toor 10240 Feb 22 16:11 archive.tar
+-rw-r--r-- 1 toor toor    14 Feb 22 16:10 file1.txt
+-rw-r--r-- 1 toor toor    14 Feb 22 16:10 file2.txt
+-rw-r--r-- 1 toor toor    14 Feb 22 16:10 file3.txt
+
+$ tar -tvf archive.tar
+-rw-r--r-- toor/toor        14 2026-02-22 16:10 file1.txt
+-rw-r--r-- toor/toor        14 2026-02-22 16:10 file2.txt
+-rw-r--r-- toor/toor        14 2026-02-22 16:10 file3.txt
+
+✅ Archive contains all three files.
+
+
+# ----------------------------
+# Task 3: Compress with gzip
+# ----------------------------
+
+$ gzip archive.tar
+
+$ ls -lh archive.tar.gz
+-rw-r--r-- 1 toor toor 182 Feb 22 16:12 archive.tar.gz
+
+✅ Compressed archive created using gzip.
+
+
+# ----------------------------
+# Task 4: Compress with bzip2
+# ----------------------------
+
+$ tar -cvf archive.tar file1.txt file2.txt file3.txt
+file1.txt
+file2.txt
+file3.txt
+
+$ bzip2 archive.tar
+
+$ ls -lh archive.tar.*
+-rw-r--r-- 1 toor toor 182 Feb 22 16:12 archive.tar.gz
+-rw-r--r-- 1 toor toor 203 Feb 22 16:13 archive.tar.bz2
+
+📌 gzip is faster; bzip2 gives better compression for large files.
+
+
+# ----------------------------
+# Task 5: Extract .tar Archive
+# ----------------------------
+
+$ tar -cvf archive.tar file1.txt file2.txt file3.txt
+file1.txt
+file2.txt
+file3.txt
+
+$ rm file1.txt file2.txt file3.txt
+
+$ tar -xvf archive.tar
+file1.txt
+file2.txt
+file3.txt
+
+$ ls
+archive.tar  archive.tar.bz2  archive.tar.gz  file1.txt  file2.txt  file3.txt
+
+✅ Extraction successful.
+
+
+# ----------------------------
+# Task 6: Extract .tar.gz Archive
+# ----------------------------
+
+$ rm file1.txt file2.txt file3.txt
+
+$ tar -xzvf archive.tar.gz
+file1.txt
+file2.txt
+file3.txt
+
+$ ls
+archive.tar  archive.tar.bz2  archive.tar.gz  file1.txt  file2.txt  file3.txt
+
+✅ gzip archive extracted successfully.
+
+
+# ----------------------------
+# Task 7: Extract .tar.bz2 Archive
+# ----------------------------
+
+$ rm file1.txt file2.txt file3.txt
+
+$ tar -xjvf archive.tar.bz2
+file1.txt
+file2.txt
+file3.txt
+
+$ ls
+archive.tar  archive.tar.bz2  archive.tar.gz  file1.txt  file2.txt  file3.txt
+
+✅ bzip2 archive extracted successfully.
+
+
+# ----------------------------
+# Optional: Nested Directory Archive
+# ----------------------------
+
+$ mkdir -p project/src
+
+$ tar -czvf project_archive.tar.gz project/
+project/
+project/src/
+
+$ ls -lh project_archive.tar.gz
+-rw-r--r-- 1 toor toor 153 Feb 22 16:18 project_archive.tar.gz
+
+✅ Nested directory archived successfully.
+
+
+# ----------------------------
+# Optional: Automation Script
+# ----------------------------
+
+$ ./archive_logs.sh
+/var/log/dpkg.log
+/var/log/auth.log
+Logs archived and compressed!
