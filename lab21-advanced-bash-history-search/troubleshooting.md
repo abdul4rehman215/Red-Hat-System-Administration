@@ -1,4 +1,4 @@
-# 🛠 Troubleshooting Guide – Lab 01: Advanced Bash History and Search
+# 🛠 Troubleshooting Guide – Lab 21: Advanced Bash History and Search
 
 ---
 
