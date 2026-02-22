@@ -1,4 +1,4 @@
-# 🎤 Interview Q&A – Lab 31: logrotate
+# 🎤 Interview Q&A – Lab 31: Log Rotation with logrotate
 
 ---
 
