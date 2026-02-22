@@ -1,4 +1,4 @@
-## 🧪 Lab 16 - Adjusting CPU Scheduling with `nice` and `renice`
+## 🧪 Lab 36 - Adjusting CPU Scheduling with `nice` and `renice`
 
 ---
 
@@ -146,7 +146,7 @@ This lab teaches safe runtime control.
 ## 📁 Repository Structure
 
 ```
-lab16-cpu-scheduling/
+lab36-cpu-scheduling/
 │
 ├── README.md
 ├── commands.sh
