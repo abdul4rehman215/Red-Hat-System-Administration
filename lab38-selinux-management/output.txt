@@ -1,0 +1,16 @@
+SELinux status: enabled
+Current mode: enforcing
+
+Switching to permissive...
+Permissive
+
+Switching back to enforcing...
+Enforcing
+
+http_port_t tcp 80, 443, 8008, 8443
+
+Added custom port:
+http_port_t tcp 8081
+
+Custom module applied:
+mypolicy 1.0
