@@ -1,0 +1,64 @@
+===== TASK 1: Install Required Packages =====
+
+$ sudo dnf update -y
+Dependencies resolved.
+Nothing to do.
+Complete!
+
+$ sudo dnf install -y nfs-utils cifs-utils
+Installing:
+ nfs-utils-2.5.4-25.el9.x86_64
+ cifs-utils-6.15-5.el9.x86_64
+
+Complete!
+
+$ rpm -q nfs-utils cifs-utils
+nfs-utils-2.5.4-25.el9.x86_64
+cifs-utils-6.15-5.el9.x86_64
+
+===== TASK 2: Mount NFS Share =====
+
+$ showmount -e 10.0.2.20
+Export list for 10.0.2.20:
+/share *
+
+$ sudo mount -t nfs 10.0.2.20:/share /mnt/nfs_share
+
+$ df -hT | grep nfs
+10.0.2.20:/share   nfs   50G   1.2G   46G   3%  /mnt/nfs_share
+
+$ ls /mnt/nfs_share
+project_data
+backup
+shared_docs
+
+===== TASK 3: Mount CIFS Share =====
+
+$ ls -l /etc/cifs_credentials
+-rw------- 1 root root 42 Feb 22 17:12 /etc/cifs_credentials
+
+$ sudo mount -t cifs -o credentials=/etc/cifs_credentials \
+  //10.0.2.30/shared /mnt/cifs_share
+
+$ df -hT | grep cifs
+//10.0.2.30/shared   cifs 100G   5.0G   95G   5%  /mnt/cifs_share
+
+$ ls /mnt/cifs_share
+reports
+team_folder
+windows_docs
+
+===== TASK 4: Persistent Mounts =====
+
+$ sudo mount -a
+(no errors)
+
+$ df -hT | grep -E 'nfs|cifs'
+10.0.2.20:/share      nfs   50G   1.2G   46G   3%  /mnt/nfs_share
+//10.0.2.30/shared    cifs 100G   5.0G   95G   5%  /mnt/cifs_share
+
+$ mount | grep -E 'nfs|cifs'
+10.0.2.20:/share on /mnt/nfs_share type nfs
+//10.0.2.30/shared on /mnt/cifs_share type cifs
+
+===== Lab 16 Completed =====
