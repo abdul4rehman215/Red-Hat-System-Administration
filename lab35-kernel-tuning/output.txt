@@ -1,0 +1,145 @@
+# ==========================================
+# Lab 35 – Tuning Kernel Parameters with sysctl
+# ==========================================
+
+# ----------------------------
+# Task 1: Viewing Kernel Parameters
+# ----------------------------
+
+$ sudo sysctl -a
+abi.vsyscall32 = 1
+debug.exception-trace = 1
+fs.file-max = 9223372036854775807
+kernel.hostname = ip-172-31-10-455
+kernel.osrelease = 6.8.0-31-generic
+net.core.somaxconn = 4096
+net.ipv4.tcp_fastopen = 1
+vm.swappiness = 60
+...
+[Output truncated]
+
+✅ All kernel runtime parameters displayed.
+
+
+$ sudo sysctl vm.swappiness
+vm.swappiness = 60
+
+📌 Default swappiness value confirmed.
+
+
+# ----------------------------
+# Modify Parameter (Temporary)
+# ----------------------------
+
+$ sudo sysctl -w vm.swappiness=10
+vm.swappiness = 10
+
+$ sudo sysctl vm.swappiness
+vm.swappiness = 10
+
+✅ Swappiness successfully reduced (temporary change).
+
+
+# ----------------------------
+# Task 2: Network Tuning
+# ----------------------------
+
+$ sudo sysctl -w net.core.somaxconn=1024
+net.core.somaxconn = 1024
+
+$ sudo sysctl -w net.ipv4.tcp_fastopen=3
+net.ipv4.tcp_fastopen = 3
+
+$ sudo sysctl net.core.somaxconn net.ipv4.tcp_fastopen
+net.core.somaxconn = 1024
+net.ipv4.tcp_fastopen = 3
+
+✅ Network stack parameters updated successfully.
+
+
+# ----------------------------
+# Memory & File Descriptor Tuning
+# ----------------------------
+
+$ sudo sysctl -w vm.swappiness=10
+vm.swappiness = 10
+
+$ sudo sysctl -w fs.file-max=2097152
+fs.file-max = 2097152
+
+$ sudo sysctl vm.swappiness fs.file-max
+vm.swappiness = 10
+fs.file-max = 2097152
+
+✅ Memory tuning applied.
+
+
+# ----------------------------
+# Persisting Changes (sysctl.conf)
+# ----------------------------
+
+$ sudo sysctl -p
+vm.swappiness = 10
+net.core.somaxconn = 1024
+net.ipv4.tcp_fastopen = 3
+fs.file-max = 2097152
+
+✅ Persistent configuration loaded successfully.
+
+
+# ----------------------------
+# Modular Configuration Method
+# ----------------------------
+
+$ sudo sysctl --system
+* Applying /etc/sysctl.d/99-custom.conf ...
+vm.swappiness = 10
+net.core.somaxconn = 1024
+net.ipv4.tcp_fastopen = 3
+fs.file-max = 2097152
+
+* Applying /etc/sysctl.conf ...
+vm.swappiness = 10
+
+* Applying /etc/sysctl.d/10-network-security.conf ...
+[Other system defaults applied]
+
+✅ All sysctl configurations applied successfully.
+
+
+# ----------------------------
+# Final Verification
+# ----------------------------
+
+$ sudo sysctl vm.swappiness net.core.somaxconn net.ipv4.tcp_fastopen fs.file-max
+vm.swappiness = 10
+net.core.somaxconn = 1024
+net.ipv4.tcp_fastopen = 3
+fs.file-max = 2097152
+
+✅ Parameters verified after persistence.
+
+
+# ----------------------------
+# Optional Monitoring
+# ----------------------------
+
+$ vmstat 2
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 1  0      0 1203420  60212 832104    0    0     0     0  102  231  2  1 97  0  0
+
+$ netstat -s | head -10
+Ip:
+    245 total packets received
+    0 forwarded
+    0 incoming packets discarded
+Tcp:
+    15 active connection openings
+    2 failed connection attempts
+
+✅ Monitoring confirms system stability after tuning.
+
+# ==========================================
+# Lab 35 Completed Successfully
+# ==========================================
