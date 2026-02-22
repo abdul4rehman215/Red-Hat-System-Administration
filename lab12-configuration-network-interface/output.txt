@@ -1,0 +1,161 @@
+==============================
+Lab Setup
+==============================
+
+$ sudo systemctl status NetworkManager
+● NetworkManager.service - Network Manager
+     Loaded: loaded (/usr/lib/systemd/system/NetworkManager.service; enabled)
+     Active: active (running) since Thu 2026-02-22 12:38:10 UTC
+   Main PID: 721 (NetworkManager)
+✔ NetworkManager is active.
+
+
+==============================
+Task 1: Listing Network Devices
+==============================
+
+$ nmcli device status
+DEVICE  TYPE      STATE      CONNECTION
+eth0    ethernet  connected  System eth0
+lo      loopback  unmanaged  --
+
+✔ Primary interface: eth0
+
+
+$ nmcli device show eth0
+GENERAL.DEVICE:                         eth0
+GENERAL.TYPE:                           ethernet
+GENERAL.STATE:                          100 (connected)
+IP4.ADDRESS[1]:                         10.0.2.15/24
+IP4.GATEWAY:                            10.0.2.1
+IP4.DNS[1]:                             10.0.2.3
+✔ Current DHCP configuration displayed.
+
+
+==============================
+Task 2: Configure Static IP
+==============================
+
+$ nmcli connection show
+NAME         UUID                                  TYPE      DEVICE
+System eth0  3d4f1e3c-1c4a-4c9e-a81b-2234abcd1234  ethernet  eth0
+
+✔ Connection name identified.
+
+
+$ sudo nmcli connection modify "System eth0" \
+ipv4.addresses 192.168.1.100/24 \
+ipv4.gateway 192.168.1.1 \
+ipv4.dns "8.8.8.8,8.8.4.4" \
+ipv4.method manual
+(no output)
+
+
+$ sudo nmcli connection up "System eth0"
+Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/4)
+✔ Static IP applied.
+
+
+==============================
+Task 3: Modify Connection Profile
+==============================
+
+$ nmcli connection show "System eth0" | grep ipv4
+ipv4.method:                            manual
+ipv4.addresses:                         192.168.1.100/24
+ipv4.gateway:                           192.168.1.1
+ipv4.dns:                               8.8.8.8,8.8.4.4
+
+
+$ sudo nmcli connection modify "System eth0" 802-3-ethernet.mtu 1500
+(no output)
+✔ MTU updated.
+
+
+$ sudo nmcli connection modify "System eth0" ipv6.method disabled
+(no output)
+✔ IPv6 disabled.
+
+
+==============================
+Task 4: Restart NetworkManager
+==============================
+
+$ sudo systemctl restart NetworkManager
+(no output)
+
+
+$ systemctl status NetworkManager
+Active: active (running) since Thu 2026-02-22 15:40:12 UTC
+✔ Service restarted successfully.
+
+
+==============================
+Task 5: Hostname & DNS Configuration
+==============================
+
+$ sudo hostnamectl set-hostname mylabhost
+(no output)
+
+
+$ hostnamectl
+ Static hostname: mylabhost
+       Icon name: computer-vm
+         Chassis: vm
+      Operating System: Red Hat Enterprise Linux 9.3 (Plow)
+            Kernel: Linux 5.14.0-362.el9.x86_64
+✔ Hostname updated.
+
+
+$ sudo nmcli connection modify "System eth0" ipv4.dns "1.1.1.1 1.0.0.1"
+(no output)
+
+$ sudo nmcli connection modify "System eth0" ipv4.ignore-auto-dns yes
+(no output)
+✔ DNS configuration updated.
+
+
+==============================
+Verification
+==============================
+
+$ ip addr show eth0
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP>
+    inet 192.168.1.100/24 brd 192.168.1.255 scope global eth0
+✔ Static IP confirmed.
+
+
+$ ping -c 4 8.8.8.8
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 time=12.4 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=117 time=11.9 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=117 time=12.1 ms
+64 bytes from 8.8.8.8: icmp_seq=4 ttl=117 time=11.8 ms
+
+--- 8.8.8.8 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss
+✔ Network connectivity working.
+
+
+$ nslookup google.com
+Server:         1.1.1.1
+Address:        1.1.1.1#53
+
+Non-authoritative answer:
+Name:   google.com
+Address: 142.250.72.14
+✔ DNS resolution successful.
+
+
+==============================
+Troubleshooting Demonstration
+==============================
+
+$ sudo nmcli device disconnect eth0
+Device 'eth0' successfully disconnected.
+
+$ sudo nmcli device connect eth0
+Device 'eth0' successfully activated.
+
+$ sudo nmcli device reapply eth0
+Connection successfully reapplied.
+✔ Interface successfully reconnected.
