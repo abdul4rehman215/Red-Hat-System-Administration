@@ -58,6 +58,27 @@ lab18-selinux-basics/
 
 ---
 
+# 📌 Task Overview
+
+This lab walks through the practical fundamentals of SELinux on RHEL systems.
+
+You performed the following:
+
+* Verified SELinux status and enforcement mode
+* Installed SELinux troubleshooting tools
+* Viewed and interpreted SELinux security contexts
+* Modified file contexts temporarily using `chcon`
+* Restored default contexts using `restorecon`
+* Generated a real AVC denial using httpd
+* Analyzed the denial using `ausearch`
+* Interpreted recommendations using `sealert`
+* Applied a persistent fix using `semanage`
+* Switched between enforcing and permissive modes for testing
+
+This lab demonstrates how SELinux enforces Mandatory Access Control and how to properly troubleshoot context-related access issues.
+
+---
+
 ## 📌 Key Concepts
 
 SELinux uses:
@@ -97,3 +118,32 @@ Essential for:
 ---
 
 ✔ Lab 18 introduces real-world SELinux troubleshooting and enforcement workflows.
+
+# 🎉 Conclusion
+
+In this lab, you:
+
+✔ Verified SELinux status and enforcement mode
+✔ Viewed and interpreted SELinux contexts
+✔ Modified file contexts using `chcon`
+✔ Restored default labeling using `restorecon`
+✔ Generated and analyzed an AVC denial
+✔ Used `ausearch` and `sealert` for log analysis
+✔ Applied persistent labeling with `semanage`
+✔ Safely toggled between enforcing and permissive modes
+
+You now understand how SELinux:
+
+• Enforces Mandatory Access Control
+• Protects services like httpd from unauthorized file access
+• Prevents privilege escalation
+• Isolated services based on type enforcement
+
+These skills are critical for:
+
+• Securing production RHEL systems
+• Hardening web servers
+• Troubleshooting OpenShift environments
+• Maintaining compliance in enterprise Linux systems
+
+✔ SELinux is enabled, enforcing, and properly configured.
