@@ -1,0 +1,17 @@
+Physical volume "/dev/sdb" successfully created.
+Physical volume "/dev/sdc" successfully created.
+
+Volume group "my_vg" successfully created.
+
+Logical volume "my_lv" created.
+
+Filesystem UUID: 8d0c2c7e-xxxx-xxxx-xxxx
+
+Size of logical volume changed from 5.00 GiB to 7.00 GiB.
+
+Logical volume "my_snapshot" created.
+
+my_snapshot my_vg swi-a-s--- 1.00g my_lv 0.00
+
+Merging of volume my_snapshot started.
+my_lv: Merged: 100.00%
