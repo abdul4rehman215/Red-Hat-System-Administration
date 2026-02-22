@@ -1,0 +1,158 @@
+========================================
+Lab 03 - Managing Files and Directories via CLI
+Execution Output Log
+========================================
+
+
+--------------------------------------------------
+Task 1.1 – Create Directory
+--------------------------------------------------
+
+-bash-4.2$ pwd
+/home/student
+
+-bash-4.2$ mkdir lab3_files
+
+-bash-4.2$ ls
+Desktop  Documents  Downloads  lab3_files  Music  Pictures  Public  Templates  Videos
+
+lab3_files appears in the list.
+
+
+--------------------------------------------------
+Task 1.2 – Create File
+--------------------------------------------------
+
+-bash-4.2$ cd lab3_files
+
+-bash-4.2$ pwd
+/home/student/lab3_files
+
+-bash-4.2$ touch notes.txt
+
+-bash-4.2$ ls
+notes.txt
+
+notes.txt successfully created.
+
+
+--------------------------------------------------
+Task 2.1 – Copy File
+--------------------------------------------------
+
+-bash-4.2$ cp notes.txt notes_backup.txt
+
+-bash-4.2$ ls
+notes.txt  notes_backup.txt
+
+Both files are present.
+
+
+--------------------------------------------------
+Task 2.2 – Move File
+--------------------------------------------------
+
+-bash-4.2$ mkdir backup
+
+-bash-4.2$ mv notes_backup.txt backup/
+
+-bash-4.2$ ls backup/
+notes_backup.txt
+
+File successfully moved into the backup directory.
+
+
+--------------------------------------------------
+Task 3.1 – List Files with Detailed Information
+--------------------------------------------------
+
+-bash-4.2$ ls -l
+total 0
+drwxr-xr-x. 2 student student 28 Feb 22 11:02 backup
+-rw-r--r--. 1 student student  0 Feb 22 11:01 notes.txt
+
+Displayed information includes:
+- File permissions
+- Owner
+- Group
+- File size
+- Modification date
+
+
+--------------------------------------------------
+Task 3.2 – Advanced Metadata with stat
+--------------------------------------------------
+
+-bash-4.2$ stat notes.txt
+  File: notes.txt
+  Size: 0               Blocks: 0          IO Block: 4096   regular empty file
+Device: fd00h/64768d     Inode: 131084      Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1000/ student)   Gid: ( 1000/ student)
+Access: 2026-02-22 11:01:54.000000000 +0000
+Modify: 2026-02-22 11:01:54.000000000 +0000
+Change: 2026-02-22 11:01:54.000000000 +0000
+ Birth: 2026-02-22 11:01:54.000000000 +0000
+
+Displays inode, timestamps, permissions, and file size in bytes.
+
+
+--------------------------------------------------
+Task 4.1 – Redirect Output to File
+--------------------------------------------------
+
+-bash-4.2$ ls -l > file_list.txt
+
+-bash-4.2$ cat file_list.txt
+total 0
+drwxr-xr-x. 2 student student 28 Feb 22 11:02 backup
+-rw-r--r--. 1 student student  0 Feb 22 11:01 notes.txt
+-rw-r--r--. 1 student student 87 Feb 22 11:04 file_list.txt
+
+The file contains the same output as ls -l.
+
+
+--------------------------------------------------
+Task 4.2 – Append Output to File
+--------------------------------------------------
+
+-bash-4.2$ stat notes.txt >> file_list.txt
+
+-bash-4.2$ cat file_list.txt
+total 0
+drwxr-xr-x. 2 student student 28 Feb 22 11:02 backup
+-rw-r--r--. 1 student student  0 Feb 22 11:01 notes.txt
+-rw-r--r--. 1 student student 87 Feb 22 11:04 file_list.txt
+  File: notes.txt
+  Size: 0               Blocks: 0          IO Block: 4096   regular empty file
+Device: fd00h/64768d     Inode: 131084      Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1000/ student)   Gid: ( 1000/ student)
+Access: 2026-02-22 11:01:54.000000000 +0000
+Modify: 2026-02-22 11:01:54.000000000 +0000
+Change: 2026-02-22 11:01:54.000000000 +0000
+ Birth: 2026-02-22 11:01:54.000000000 +0000
+
+File now includes both ls -l and stat outputs.
+
+
+--------------------------------------------------
+Task 5.1 – Delete File
+--------------------------------------------------
+
+-bash-4.2$ rm notes.txt
+
+-bash-4.2$ ls
+backup  file_list.txt
+
+notes.txt successfully removed.
+
+
+--------------------------------------------------
+Task 5.2 – Delete Directory
+--------------------------------------------------
+
+-bash-4.2$ rm -r backup
+
+-bash-4.2$ ls
+file_list.txt
+
+backup directory successfully removed.
