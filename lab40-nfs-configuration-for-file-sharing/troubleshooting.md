@@ -1,4 +1,4 @@
-# 🛠 Troubleshooting Guide – Lab 20: Configuring NFS for File Sharing
+# 🛠 Troubleshooting Guide – Lab 40: Configuring NFS for File Sharing
 
 ---
 
