@@ -1,0 +1,111 @@
+# =========================================================
+# OS / Editor / Temporary Files
+# =========================================================
+.DS_Store
+Thumbs.db
+
+*.swp
+*.swo
+*.tmp
+*.temp
+*.bak
+*.old
+*~
+*.pid
+
+.vscode/
+.idea/
+.ipynb_checkpoints/
+
+# =========================================================
+# Logs / Command Outputs / Lab Artifacts
+# =========================================================
+*.log
+*.out
+*.err
+*.json
+
+logs/
+log/
+output/
+outputs/
+report/
+reports/
+remote_logs/
+remotehost/
+
+# Common transcript file
+output.txt
+output/*.txt
+
+# Benchmark artifacts
+fio-*.log
+testfile
+testfile.*
+
+# =========================================================
+# Backups / Cron / Automation Artifacts
+# =========================================================
+backups/
+backup/
+*backup*
+*_backup_*
+
+# =========================================================
+# Archives / Compressed Files / Bundles
+# =========================================================
+*.tar
+*.tar.gz
+*.tgz
+*.tar.bz2
+*.tbz2
+*.tar.xz
+*.zip
+*.7z
+*.gz
+*.bz2
+
+# sosreport archives (Diagnostics lab)
+sosreport-*
+/var/tmp/sosreport-*
+
+# =========================================================
+# Secrets / Credentials (IMPORTANT)
+# =========================================================
+*credentials*
+*.key
+*.pem
+*.pfx
+*.crt
+*.p12
+
+.env
+.env.*
+secrets/
+private/
+
+# SSH keys
+id_rsa
+id_rsa.pub
+known_hosts
+
+# CIFS credentials (Lab 16)
+cifs_credentials
+
+# =========================================================
+# Package Manager / Cache (if accidentally copied)
+# =========================================================
+dnf.cache/
+yum.cache/
+
+# =========================================================
+# Logrotate / System State (if exported)
+# =========================================================
+logrotate.status
+/var/lib/logrotate/logrotate.status
+
+# =========================================================
+# Mount / Temporary Lab Directories (Safety)
+# =========================================================
+mnt/
+mount/
