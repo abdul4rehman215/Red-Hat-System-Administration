@@ -146,11 +146,11 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 | Lab | Title | Focus Area |
 |-----|-------|------------|
-| 01 | Introduction to RHEL | Linux fundamentals + subscription model |
-| 02 | Logging into RHEL & Shell Basics | Local/SSH login + PS1 customization |
-| 03 | File & Directory Management | Metadata, redirection, lifecycle |
-| 04 | Accessing Local Help | man, info, apropos mastery |
-| 05 | Editing Text Files | vim, nano, sed, awk |
+| 01 | [Introduction to RHEL](lab01-introduction-to-red-hat-enterprise-linux) | Linux fundamentals + subscription model |
+| 02 | [Logging into RHEL & Shell Basics](lab02-logging-into-rhel-and-using-the-shell) | Local/SSH login + PS1 customization |
+| 03 | [File & Directory Management](lab03-managing-files-and-directories-via-cli) | Metadata, redirection, lifecycle |
+| 04 | [Accessing Local Help](lab04-accessing-local-help) | man, info, apropos mastery |
+| 05 | [Editing Text Files](lab05-editing-text-files-in-rhel) | vim, nano, sed, awk |
 
 ## 🔹 Identity & Access Control (Labs 6–7)
 
@@ -164,8 +164,8 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 | Lab | Title | Focus Area |
 |-----|-------|------------|
-| 06 | Managing Users & Groups | user lifecycle + password aging |
-| 07 | Permissions & Ownership | chmod, special bits, SELinux intro |
+| 06 | [Managing Users & Groups](lab06-managing-users-groups) | user lifecycle + password aging |
+| 07 | [Permissions & Ownership](lab07-file-permissions-ownership) | chmod, special bits, SELinux intro |
 
 ## 🔹 Processes, Services & Logs (Labs 8–11)
 
@@ -181,10 +181,10 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 | Lab | Title | Focus Area |
 |-----|-------|------------|
-| 08 | Process Monitoring | ps, top, htop, signals |
-| 09 | systemd Management | service lifecycle + journald |
-| 10 | SSH Hardening | Key auth + firewall validation |
-| 11 | Log Analysis | journalctl, grep parsing, logrotate |
+| 08 | [Process Monitoring](lab08-monitoring-managing-processes) | ps, top, htop, signals |
+| 09 | [systemd Management](lab09-managing-services-systemd) | service lifecycle + journald |
+| 10 | [SSH Hardening](lab10-configuring-and-securing-ssh) | Key auth + firewall validation |
+| 11 | [Log Analysis](lab11-analyzing-and-storing-logs) | journalctl, grep parsing, logrotate |
 
 ## 🔹 Networking & Cloud Concepts (Labs 12–13)
 
@@ -198,8 +198,8 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 | Lab | Title | Focus Area |
 |-----|-------|------------|
-| 12 | Network Configuration | nmcli static IP/DNS |
-| 13 | Multi-Tenant Resource Allocation | OpenStack projects + quotas |
+| 12 | [Network Configuration](lab12-configuration-network-interface) | nmcli static IP/DNS |
+| 13 | [Multi-Tenant Resource Allocation](lab13-multi-tenant-resource-allocation) | OpenStack projects + quotas |
 
 ## 🔹 Packages & Storage (Labs 14–16)
 
@@ -214,9 +214,9 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 | Lab | Title | Focus Area |
 |-----|-------|------------|
-| 14 | Package Management | RHSM + dnf repo control |
-| 15 | Filesystem & LVM | Mounts, fstab, resize |
-| 16 | Network Filesystems | NFS + CIFS persistent mounts |
+| 14 | [Package Management](lab14-package-management) | RHSM + dnf repo control |
+| 15 | [Filesystem & LVM](lab15-filesystem-management) | Mounts, fstab, resize |
+| 16 | [Network Filesystems](lab16-network-filesystems) | NFS + CIFS persistent mounts |
 
 ## 🔹 Performance, Security & Enterprise Tooling (Labs 17–20)
 
@@ -231,11 +231,10 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 | Lab | Title | Focus Area |
 |-----|-------|------------|
-| 17 | Performance Monitoring | CPU/mem/disk + stress testing |
-| 18 | SELinux Fundamentals | AVC denials + context fixes |
-| 19 | Red Hat Portal & Cockpit | Web-based admin workflows |
-| 20 | Diagnostics & Insights | sosreport + insights-client |
-
+| 17 | [Performance Monitoring](lab17-monitoring-system-performance) | CPU/mem/disk + stress testing |
+| 18 | [SELinux Fundamentals](lab18-securing-system-with-selinux-basics) | AVC denials + context fixes |
+| 19 | [Red Hat Portal & Cockpit](lab19-redhat-customer-portal-cockpit) | Web-based admin workflows |
+| 20 | [Diagnostics & Insights](lab20-collecting-diagnostic-data-and-using-redhat-tools) | sosreport + insights-client |
 ---
 
 ## ✅ Skills Demonstrated (Labs 1–20)
@@ -279,12 +278,12 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 | Lab | Title | Focus Area |
 |-----|-------|------------|
-| 21 | Advanced Bash History | Reverse search + tuning |
-| 22 | Aliases & Functions | Reusable automation |
-| 23 | Command Substitution | Dynamic command pipelines |
-| 24 | Brace Expansion & Globbing | Bulk operations |
-| 25 | Job Control | Background/foreground mgmt |
-| 26 | Environment Variables | Scope + persistence |
+| 21 | [Advanced Bash History](lab21-advanced-bash-history-search) | Reverse search + tuning |
+| 22 | [Aliases & Functions](lab22-aliases-and-functions) | Reusable automation |
+| 23 | [Command Substitution](lab23-command-substitution) | Dynamic command pipelines |
+| 24 | [Brace Expansion & Globbing](lab24-brace-expansion-and-globbing) | Bulk operations |
+| 25 | [Job Control](lab25-job-control) | Background/foreground mgmt |
+| 26 | [Environment Variables](lab26-environment-and-shell-variables) | Scope + persistence |
 
 ## 🔹 Scheduling & Time-Based Operations (Labs 27–29)
 
@@ -299,9 +298,9 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 | Lab | Title | Focus Area |
 |-----|-------|------------|
-| 27 | Cron Jobs | Scheduled automation |
-| 28 | at Command | One-time job scheduling |
-| 29 | systemd Timers | Enterprise scheduling |
+| 27 | [Cron Jobs](lab27-setting-up-cron-jobs) | Scheduled automation |
+| 28 | [at Command](lab28-using-at-command) | One-time job scheduling |
+| 29 | [systemd Timers](lab29-systemd-timers-for-task-scheduling) | Enterprise scheduling |
 
 ## 🔹 Logging & Observability (Labs 30–32)
 
@@ -316,9 +315,9 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 | Lab | Title | Focus Area |
 |-----|-------|------------|
-| 30 | journalctl Analysis | Query, export, retention |
-| 31 | logrotate Configuration | Rotation policies |
-| 32 | Centralized Logging (rsyslog) | Client/server forwarding |
+| 30 | [journalctl Analysis](lab30-journalctl-analysis) | Query, export, retention |
+| 31 | [logrotate Configuration](lab31-logrotate) | Rotation policies |
+| 32 | [Centralized Logging (rsyslog)](lab32-centralized-logging-rsyslog) | Client/server forwarding |
 
 ## 🔹 Packaging & Secure Transfers (Labs 33–34)
 
@@ -333,8 +332,8 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 | Lab | Title | Focus Area |
 |-----|-------|------------|
-| 33 | tar Archiving | gzip vs bzip2 |
-| 34 | scp & rsync | Secure & delta transfers |
+| 33 | [tar Archiving](lab33-tar-archiving) | gzip vs bzip2 |
+| 34 | [scp & rsync](lab34-scp-rsync) | Secure & delta transfers |
 
 ## 🔹 Kernel & Resource Tuning (Labs 35–37)
 
@@ -349,9 +348,9 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 | Lab | Title | Focus Area |
 |-----|-------|------------|
-| 35 | sysctl Tuning | Kernel parameter persistence |
-| 36 | nice & renice | CPU priority control |
-| 37 | I/O Scheduler | Benchmark & tuning |
+| 35 | [sysctl Tuning](lab35-kernel-tuning) | Kernel parameter persistence |
+| 36 | [nice & renice](lab36-cpu-scheduling) | CPU priority control |
+| 37 | [I/O Scheduler](lab37-io-scheduler) | Benchmark & tuning |
 
 ## 🔹 Enterprise Hardening & Infrastructure (Labs 38–40)
 
@@ -366,10 +365,9 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 | Lab | Title | Focus Area |
 |-----|-------|------------|
-| 38 | Advanced SELinux | semanage + audit2allow |
-| 39 | LVM Lifecycle + Snapshots | Expansion & rollback |
-| 40 | NFS Server/Client | Secure file sharing |
-
+| 38 | [Advanced SELinux](lab38-selinux-management) | semanage + audit2allow |
+| 39 | [LVM Lifecycle + Snapshots](lab39-lvm-management) | Expansion & rollback |
+| 40 | [NFS Server/Client](lab40-nfs-configuration-for-file-sharing) | Secure file sharing |
 ---
 
 ## ✅ Skills Demonstrated (Labs 21–40)
