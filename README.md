@@ -122,7 +122,7 @@ This portfolio reflects **practical Linux engineering capability**, not isolated
 
 # 🧱 SECTION 1: RHEL Administration & Enterprise Operations (Labs 1–20)
 
-div align="left">
+<div align="left">
 
 ![Category](https://img.shields.io/badge/Category-RHEL%20Administration-EE0000?style=for-the-badge&logo=redhat)
 ![Track](https://img.shields.io/badge/Track-Enterprise%20Linux%20Operations-111111?style=for-the-badge&logo=linux)
