@@ -11,7 +11,7 @@
 
 <!-- ====================== PLATFORM & STACK ====================== -->
 
-![RHEL](https://img.shields.io/badge/Red%20Hat-Enterprise%20Linux%209-EE0000?style=for-the-badge&logo=redhat)
+![RHEL](https://img.shields.io/badge/OS%20%7C%20Red%20Hat-Enterprise%20Linux%208%20%7C%209-EE0000?style=for-the-badge&logo=redhat&logoColor=EE0000)
 ![Linux](https://img.shields.io/badge/Linux-System%20Administration-black?style=for-the-badge&logo=linux)
 ![Bash](https://img.shields.io/badge/Bash-Scripting-4EAA25?style=for-the-badge&logo=gnubash)
 ![Systemd](https://img.shields.io/badge/systemd-Service%20Management-2C3E50?style=for-the-badge)
