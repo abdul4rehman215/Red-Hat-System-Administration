@@ -461,7 +461,7 @@ This portfolio includes verifiable operational evidence:
 # 🗂 Repository Structure
 
 ```
-Product-Security-Supply-Chain-Assurance/
+Red-Hat-System-Administration/
 ├── 🔹 RHEL Administration & Enterprise Operations (Labs 1–20)
 ├── 🔹 Linux Automation, Logging & Infrastructure Hardening (Labs 21–40)
 └── README.md
